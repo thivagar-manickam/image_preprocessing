@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
-from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param
+from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param,validate_non_linear
 from typing import List, Union
 
 filterwarnings('ignore')
@@ -118,3 +118,82 @@ class TraditionalImageEnhancement:
 
         except Exception as ex:
             raise Exception(f"An error occurred while trying to apply the linear equation on the given image - {ex}")
+
+    def non_linear_equation(self, value: Union[int, float], cmap: str = None,type: str = None,
+                            channel: List[int] = None) -> np.ndarray:
+
+        try:
+            is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
+            is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
+
+            if not self.is_color_image:
+                image = self.image.astype('float')
+
+                if type == 'power':
+                    image = np.clip(np.power(image,value), 0, 255)
+                    return image
+
+                if type == 'exp':
+                    image = np.clip(np.exp(image), 0, 255)
+                    return image
+
+                if type == 'log':
+                    image = np.clip(np.log1p(image), 0, 255)
+                    return image
+
+            else:
+                image = self.image.copy()
+
+            if is_hsv:
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+
+            if is_lab:
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
+
+                # Apply the transformation on the default planes when the channel value is None
+            if channel is None:
+                if is_hsv:
+                    if type == 'power':
+                        image[:, :, 2] = np.clip(np.power(image[:,:,2], value), 0, 255)
+
+                    if type == 'exp':
+                        image[:, :, 2] = np.clip(np.exp(image[:,:,2]), 0, 255)
+
+                    if type == 'log':
+                        image[:, :, 2] = np.clip(np.log1p(image[:,:,2]), 0, 255)
+
+                if is_lab:
+
+                    if type == 'power':
+                        image[:, :, 0] = np.clip(np.power(image[:, :, 0],value), 0, 255)
+
+                    if type == 'exp':
+                        image[:,:,0] = np.clip(np.exp(image[:, :, 0]), 0, 255)
+
+                    if type =='log':
+                        image[:, :, 0] = np.clip(np.log1p(image[:, :, 0]), 0, 255)
+            else:
+                # If the channel validation passes, then apply the transformation on the specified planes
+                if validate_channel_param(channel=channel):
+                    for x in channel:
+                        image[:, :, x] = np.clip(np.power(image[:, :, x],value), 0, 255)
+
+            if is_hsv:
+                image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
+            if is_lab:
+                image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
+
+                image = image.astype(np.uint8)
+
+            plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
+            return image
+
+
+        except ValueError as ex:
+            raise ValueError(ex)
+
+        except CustomException as ex:
+            raise CustomException(ex)
+
+        except Exception as ex:
+            raise Exception(f"An error occurred while trying to apply the non-linear equation on the given image - {ex}")

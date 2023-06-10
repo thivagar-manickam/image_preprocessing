@@ -30,7 +30,7 @@ def load_image(image_path: str, cmap: str) -> Tuple[numpy.ndarray, bool]:
             raise CustomException("Invalid cmap value specified. cmap value can only be either gray or rgb")
 
         if image is None:
-            raise CustomException("Unable to sread the image. Please check the image path")
+            raise CustomException("Unable to read the image. Please check the image path")
 
         if cmap.lower() == 'rgb':
             is_color_image = True
@@ -84,3 +84,11 @@ def validate_channel_param(channel: List[int]) -> bool:
         raise CustomException(f"channel parameter can have values as 0, 1, 2. No other values are allowed")
 
     return True
+
+def validate_non_linear(type : str):
+    types_on_input = ['exp','log','power','negative']
+
+    if type not in types_on_input:
+        raise CustomException(f"input parameter can have value as  exp,log,power")
+    if type in types_on_input:
+        return True

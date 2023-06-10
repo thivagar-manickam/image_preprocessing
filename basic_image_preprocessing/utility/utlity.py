@@ -3,10 +3,10 @@ import cv2
 import numpy
 from basic_image_preprocessing.exception.custom_exception import CustomException
 import matplotlib.pyplot as plt
-from typing import List
+from typing import List, Tuple
 
 
-def load_image(image_path: str, cmap: str) -> numpy.ndarray:
+def load_image(image_path: str, cmap: str) -> Tuple[numpy.ndarray, bool]:
     """
     load_image -> The definition will be used to load the image from the
     file path and return the loaded image to the calling definition.
@@ -17,6 +17,7 @@ def load_image(image_path: str, cmap: str) -> numpy.ndarray:
     :param cmap: Allowed value for cmap are 'gray' and 'rgb'
     :return numpy.ndarray:
     """
+    is_color_image = False
     if os.path.exists(image_path):
         if cmap.lower() == 'gray':
             image = cv2.imread(f"{image_path}", 0)
@@ -29,31 +30,14 @@ def load_image(image_path: str, cmap: str) -> numpy.ndarray:
             raise CustomException("Invalid cmap value specified. cmap value can only be either gray or rgb")
 
         if image is None:
-            raise CustomException("Unable to read the image. Please check the image path")
-        return image
+            raise CustomException("Unable to sread the image. Please check the image path")
+
+        if cmap.lower() == 'rgb':
+            is_color_image = True
+
+        return image, is_color_image
     else:
         raise FileNotFoundError(f"File not found: {image_path}")
-
-
-def is_color_image(image) -> bool:
-    """
-    is_color_image -> Definition used to check whether the loaded image is
-    a color image or gray scale image. Based on the return value the calling
-    definition will apply the transformation on the single channel for the gray scale
-    image and on all the 3 channels for a color image
-
-    :param image:
-    :return bool | str:
-    """
-    if len(image.shape) == 2:
-        return False
-
-    if len(image.shape) == 3:
-        return True
-
-    if len(image.shape) > 3:
-        raise CustomException("The image has unexpected number of color channels. Please use only Color or gray scale "
-                              "image")
 
 
 def plot_graph(original_image, processed_image, is_color_image_flag, pre_processing_method) -> None:
@@ -65,7 +49,7 @@ def plot_graph(original_image, processed_image, is_color_image_flag, pre_process
     :param processed_image:
     :param is_color_image_flag:
     :param pre_processing_method:
-    :return:
+    :return None:
     """
     plt.figure(figsize=(20, 10))
 
@@ -88,7 +72,7 @@ def validate_channel_param(channel: List[int]) -> bool:
     """
     Definition to validate if the given channel param satisfy all the required conditions
     :param channel:
-    :return:
+    :return bool:
     """
     if any(type(x) != int for x in channel):
         raise CustomException(f"channel parameter can take only integer values")

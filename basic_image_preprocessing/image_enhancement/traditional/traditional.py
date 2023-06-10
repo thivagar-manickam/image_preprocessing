@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
-from basic_image_preprocessing.utility.utlity import load_image, is_color_image, plot_graph, validate_channel_param
-from typing import List
+from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param
+from typing import List, Union
 
 filterwarnings('ignore')
 
@@ -19,15 +19,15 @@ class TraditionalImageEnhancement:
         Accepted Values -> gray and rgb
 
     List of Linear Transformation methods available:
-    1. linear_equation(slope: int | float, constant: int | float) -> np.ndarray | str
+    1. linear_equation(slope: Union[int, float], constant: Union[int, float], cmap: str = None,
+                        channel: List[int] = None) -> np.ndarray
     """
     def __init__(self, image_path: str, cmap: str):
         try:
             self.image_path = image_path
             self.is_color_image = False
 
-            self.image = load_image(self.image_path, cmap)
-            self.is_color_image = is_color_image(self.image)
+            self.image, self.is_color_image = load_image(self.image_path, cmap)
 
         except FileNotFoundError:
             raise FileNotFoundError(f"File not found: {self.image_path}")
@@ -35,7 +35,7 @@ class TraditionalImageEnhancement:
         except CustomException as ex:
             raise ex
 
-    def linear_equation(self, slope: int | float, constant: int | float, cmap: str = None,
+    def linear_equation(self, slope: Union[int, float], constant: Union[int, float], cmap: str = None,
                         channel: List[int] = None) -> np.ndarray:
         """
         This definition will apply the linear equation formula on the given image

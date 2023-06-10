@@ -64,14 +64,14 @@ class TraditionalImageEnhancement:
             numpy.ndarray -> image post applying the linear equation formula on the given image
         """
         try:
-            is_hsv = True if cmap.lower() == 'hsv' else False
-            is_lab = True if cmap.lower() == 'lab' else False
+            is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
+            is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
 
             if not self.is_color_image:
                 image = self.image.astype('float')
                 image = np.clip(slope * image + constant, 0, 255).astype(np.uint8)
             else:
-                image = self.image
+                image = self.image.copy()
 
                 # Convert the rgb image to the required cmap color scale
                 if is_hsv:
@@ -101,20 +101,20 @@ class TraditionalImageEnhancement:
                 if is_lab:
                     image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
 
-                image = image.astype(np.unit8)
+                image = image.astype(np.uint8)
 
             plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
             return image
 
         except TypeError as ex:
-            print(f"Type Error encountered in the method - {ex}. Please validate if proper value given for slope and "
-                  f"constant")
+            raise TypeError(f"Type Error encountered in the method - {ex}. Please validate if proper value given "
+                            f"for slope and constant")
 
         except ValueError as ex:
-            print(ex)
+            raise ValueError(ex)
 
         except CustomException as ex:
-            print(ex)
+            raise CustomException(ex)
 
-        except:
-            print("An error occurred while trying to apply the linear equation on the given image")
+        except Exception as ex:
+            raise Exception(f"An error occurred while trying to apply the linear equation on the given image - {ex}")

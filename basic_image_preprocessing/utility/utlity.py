@@ -90,13 +90,13 @@ def validate_channel_param(channel: List[int]) -> bool:
     :param channel:
     :return:
     """
+    if any(type(x) != int for x in channel):
+        raise CustomException(f"channel parameter can take only integer values")
+
     if len(channel) > 3:
         raise CustomException(f"channel parameter excepts 1 - 3 values; but received {len(channel)}")
 
     if any(x > 2 for x in channel):
         raise CustomException(f"channel parameter can have values as 0, 1, 2. No other values are allowed")
-
-    if any(type(x) != int for x in channel):
-        raise CustomException(f"channel parameter can take only integer values")
 
     return True

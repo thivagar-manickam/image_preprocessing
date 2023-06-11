@@ -119,8 +119,33 @@ class TraditionalImageEnhancement:
         except Exception as ex:
             raise Exception(f"An error occurred while trying to apply the linear equation on the given image - {ex}")
 
-    def non_linear_equation(self, value: Union[int, float], method: str, cmap: str = None,
+    def non_linear_equation(self, method: str,value: Union[int, float] = None, cmap: str = None,
                             channel: List[int] = None) -> np.ndarray:
+        """
+                This definition will apply the non-linear equation on the given image
+                with the value and method given in the parameters
+
+                Input:
+                    value -> This value to be used for the power transformation on the image for log and exponential
+                    it is none
+                    method -> This value will take string and to be used for the non-linear power transformation
+                    cmap -> This value will denote on which plane the transformation needs to be applied on provided the
+                     cmap during object creation was mentioned as rgb
+                        Accepted value:
+                            'gray' -> will apply the transformation on the gray scale image
+                            'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
+                             apply transformation on all the three channels
+                            'hsv' -> will apply the transformation on the channels given in 'channels' list. By default,
+                            apply transformation on the Value channel.
+                            'lab' -> will apply the transformation on the channels given in 'channels' list. By default,
+                            apply transformation on the Lightness channel.
+
+                        Default value -> None. Will default to the cmap value specified during the object creation
+
+
+                Output:
+                    numpy.ndarray -> image post applying the non-linear equation on the given image
+                """
 
         try:
             validate_param_list_value(method, ['power', 'exponential', 'log'], 'Non - Linear', 'method')
@@ -132,7 +157,10 @@ class TraditionalImageEnhancement:
                 image = self.image.astype('float')
 
                 if method == 'power':
-                    image = np.clip(np.power(image, value), 0, 255).astype(np.uint8)
+                    if value != None :
+                        image = np.clip(np.power(image, value), 0, 255).astype(np.uint8)
+                    else:
+                        raise CustomException(f"The value is needed if you are performing power transformation")
 
                 elif method == 'exponential':
                     image = np.clip(np.exp(image), 0, 255).astype(np.uint8)
@@ -150,7 +178,10 @@ class TraditionalImageEnhancement:
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
 
                 if method == 'power':
-                    image = np.clip(np.power(image, value), 0, 255)
+                    if value != None:
+                        image = np.clip(np.power(image, value), 0, 255)
+                    else:
+                        raise AssertionError("The power transformation cannot be done with Null value")
 
                 elif method == 'exponential':
                     image = np.clip(np.exp(image), 0, 255)
@@ -193,7 +224,7 @@ class TraditionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-            plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
+            plot_graph(self.image, image, self.is_color_image, 'Non Linear Equation')
             return image
 
         except ValueError as ex:

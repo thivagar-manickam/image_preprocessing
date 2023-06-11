@@ -85,10 +85,10 @@ def validate_channel_param(channel: List[int]) -> bool:
 
     return True
 
-def validate_non_linear(type : str):
-    types_on_input = ['exp','log','power','negative']
 
-    if type not in types_on_input:
-        raise CustomException(f"input parameter can have value as  exp,log,power")
-    if type in types_on_input:
-        return True
+def validate_param_list_value(value: str, list_of_accepted_values: List[str],
+                              function_name: str, param_name: str) -> bool:
+    if value not in list_of_accepted_values:
+        raise CustomException(f"In {function_name} transformation the '{param_name}' param can take only one of the "
+                              f"string available in {list_of_accepted_values}")
+    return True

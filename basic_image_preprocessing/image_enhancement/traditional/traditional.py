@@ -157,7 +157,7 @@ class TraditionalImageEnhancement:
                 image = self.image.astype('float')
 
                 if method == 'power':
-                    if value != None :
+                    if value is not None:
                         image = np.clip(np.power(image, value), 0, 255).astype(np.uint8)
                     else:
                         raise CustomException(f"The value is needed if you are performing power transformation")
@@ -178,10 +178,10 @@ class TraditionalImageEnhancement:
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
 
                 if method == 'power':
-                    if value != None:
+                    if value is not None:
                         image = np.clip(np.power(image, value), 0, 255)
                     else:
-                        raise AssertionError("The power transformation cannot be done with Null value")
+                        raise CustomException("The power transformation cannot be done with None value")
 
                 elif method == 'exponential':
                     image = np.clip(np.exp(image), 0, 255)

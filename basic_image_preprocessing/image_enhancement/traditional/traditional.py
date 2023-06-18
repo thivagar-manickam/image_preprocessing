@@ -2,7 +2,8 @@ import numpy as np
 import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
-from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param, validate_param_list_value
+from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param, \
+    validate_param_list_value
 from typing import List, Union
 
 filterwarnings('ignore')
@@ -50,10 +51,10 @@ class TraditionalImageEnhancement:
                     'gray' -> will apply the transformation on the gray scale image
                     'rgb' -> will apply the transformation on the channels given in 'channels' list. By default, apply
                             transformation on all the three channels
-                    'hsv' -> will apply the transformation on the channels given in 'channels' list. By default, apply
-                            transformation on the Value channel.
-                    'lab' -> will apply the transformation on the channels given in 'channels' list. By default, apply
-                            transformation on the Lightness channel.
+                    'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
+                            will throw an error
+                    'lab' -> will apply the transformation only on the lightness channel. If the channel param is
+                            specified will throw an error
 
                 Default value -> None. Will default to the cmap value specified during the object creation
 
@@ -74,11 +75,17 @@ class TraditionalImageEnhancement:
                 image = self.image.copy()
 
                 # Convert the rgb image to the required cmap color scale
-                #if is_hsv:
-                #    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+                if is_hsv:
+                    if channel is not None:
+                        raise CustomException("Linear equation can be applied only on the Value channel for a HSV "
+                                              "type image. Remove the channel parameter")
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
-                #if is_lab:
-                #    image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
+                elif is_lab:
+                    if channel is not None:
+                        raise CustomException("Linear equation can be applied only of the Lightness channel for a LAB "
+                                              "type image. Remove the channel parameter")
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
 
                 # Apply the transformation on the default planes when the channel value is None
                 if channel is None:
@@ -119,48 +126,57 @@ class TraditionalImageEnhancement:
         except Exception as ex:
             raise Exception(f"An error occurred while trying to apply the linear equation on the given image - {ex}")
 
-    def non_linear_equation(self, method: str,value: Union[int, float] = None, cmap: str = None,
+    def non_linear_equation(self, method: str, power_value: Union[int, float] = None, cmap: str = None,
                             channel: List[int] = None) -> np.ndarray:
         """
-                This definition will apply the non-linear equation on the given image
-                with the value and method given in the parameters
+        This definition will apply the non-linear equation on the given image
+        with the value and method given in the parameters
 
-                Input:
-                    value -> This value to be used for the power transformation on the image for log and exponential
-                    it is none
-                    method -> This value will take string and to be used for the non-linear power transformation
-                    cmap -> This value will denote on which plane the transformation needs to be applied on provided the
-                     cmap during object creation was mentioned as rgb
-                        Accepted value:
-                            'gray' -> will apply the transformation on the gray scale image
-                            'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
-                             apply transformation on all the three channels
-                            'hsv' -> will apply the transformation on the channels given in 'channels' list. By default,
-                            apply transformation on the Value channel.
-                            'lab' -> will apply the transformation on the channels given in 'channels' list. By default,
-                            apply transformation on the Lightness channel.
+        Input:
+            power_value -> This is the value that will be applied on the image for the power transformation. It is a
+                mandatory param if the method = 'power' else it is non-mandatory and will take the default value of
+                None
 
-                        Default value -> None. Will default to the cmap value specified during the object creation
+            method -> This value will instruct the definition on what type of non-linear transformation to be done on
+                the image.
+                Accepted values - 'power', 'exponential', 'log'
+                Will throw an error if the string is different from the accepted values
 
+            cmap -> This value will denote on which plane the transformation needs to be applied on provided the
+                cmap during object creation was mentioned as rgb
+                Accepted value:
+                    'gray' -> will apply the transformation on the gray scale image
+                    'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
+                            apply transformation on all the three channels
+                    'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
+                            will throw an error
+                    'lab' -> will apply the transformation only on the lightness channel. If the channel param is
+                            specified will throw an error
 
-                Output:
-                    numpy.ndarray -> image post applying the non-linear equation on the given image
-                """
+                Default value -> None. Will default to the cmap value specified during the object creation
+
+        Output:
+            numpy.ndarray -> image post applying the non-linear equation on the given image
+        """
 
         try:
+            power_value_custom_exception = f"power_value is a required param when applying the power transformation." \
+                                           f" Please pass in the power_value parameter"
+
             validate_param_list_value(method, ['power', 'exponential', 'log'], 'Non - Linear', 'method')
 
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
 
+            # Validating if power_value is available if the method is 'power'
+            if method == 'power' and power_value is None:
+                raise CustomException(power_value_custom_exception)
+
             if not self.is_color_image:
                 image = self.image.astype('float')
 
                 if method == 'power':
-                    if value is not None:
-                        image = np.clip(np.power(image, value), 0, 255).astype(np.uint8)
-                    else:
-                        raise CustomException(f"The value is needed if you are performing power transformation")
+                    image = np.clip(np.power(image, power_value), 0, 255).astype(np.uint8)
 
                 elif method == 'exponential':
                     image = np.clip(np.exp(image), 0, 255).astype(np.uint8)
@@ -172,55 +188,61 @@ class TraditionalImageEnhancement:
                 image = self.image.copy()
 
                 if is_hsv:
+                    if channel is not None:
+                        raise CustomException("Non - Linear equation can be applied only on the Value channel for a HSV"
+                                              " type image. Remove the channel parameter")
+
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
-                if is_lab:
+                elif is_lab:
+                    if channel is not None:
+                        raise CustomException("Non - Linear equation can be applied only of the Lightness channel for a"
+                                              " LAB type image. Remove the channel parameter")
+
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
 
-                if method == 'power':
-                    if value is not None:
-                        image = np.clip(np.power(image, value), 0, 255)
-                    else:
-                        raise CustomException("The power transformation cannot be done with None value")
-
-                elif method == 'exponential':
-                    image = np.clip(np.exp(image), 0, 255)
-
-                elif method == 'log':
-                    image = np.clip(np.log1p(image), 0, 255)
-
-                # # Apply the transformation on the default planes when the channel value is None
+                # Apply the transformation on the default planes when the channel value is None
                 if channel is None:
-                     if is_hsv:
-                         if method == 'power':
-                             image[:, :, 2] = np.clip(np.power(image[:, :, 2], value), 0, 255)
+                    if is_hsv:
+                        if method == 'power':
+                            image[:, :, 2] = np.clip(np.power(image[:, :, 2], power_value), 0, 255)
 
-                         if method == 'exponential':
-                             image[:, :, 2] = np.clip(np.exp(image[:, :, 2]), 0, 255)
+                        if method == 'exponential':
+                            image[:, :, 2] = np.clip(np.exp(image[:, :, 2]), 0, 255)
 
-                         if method == 'log':
-                             image[:, :, 2] = np.clip(np.log1p(image[:, :, 2]), 0, 255)
+                        if method == 'log':
+                            image[:, :, 2] = np.clip(np.log1p(image[:, :, 2]), 0, 255)
 
-                     if is_lab:
+                    elif is_lab:
 
-                         if method == 'power':
-                             image[:, :, 0] = np.clip(np.power(image[:, :, 0], value), 0, 255)
+                        if method == 'power':
+                            image[:, :, 0] = np.clip(np.power(image[:, :, 0], power_value), 0, 255)
 
-                         if method == 'exponential':
-                             image[:, :, 0] = np.clip(np.exp(image[:, :, 0]), 0, 255)
+                        if method == 'exponential':
+                            image[:, :, 0] = np.clip(np.exp(image[:, :, 0]), 0, 255)
 
-                         if method == 'log':
-                             image[:, :, 0] = np.clip(np.log1p(image[:, :, 0]), 0, 255)
+                        if method == 'log':
+                            image[:, :, 0] = np.clip(np.log1p(image[:, :, 0]), 0, 255)
+
+                    else:
+                        if method == 'power':
+                            image = np.clip(np.power(image, power_value), 0, 255)
+
+                        elif method == 'exponential':
+                            image = np.clip(np.exp(image), 0, 255)
+
+                        elif method == 'log':
+                            image = np.clip(np.log1p(image), 0, 255)
                 else:
-                ## If the channel validation passes, then apply the transformation on the specified planes
+                    # If the channel validation passes, then apply the transformation on the specified planes
                     if validate_channel_param(channel=channel):
                         for x in channel:
-                            image[:, :, x] = np.clip(np.power(image[:, :, x], value), 0, 255)
+                            image[:, :, x] = np.clip(np.power(image[:, :, x], power_value), 0, 255)
 
-                #if is_hsv:
-                 #   image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
-                #if is_lab:
-                 #   image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
+                if is_hsv:
+                    image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
+                if is_lab:
+                    image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
 
                 image = image.astype(np.uint8)
 

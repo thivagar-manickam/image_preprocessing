@@ -74,11 +74,11 @@ class TraditionalImageEnhancement:
                 image = self.image.copy()
 
                 # Convert the rgb image to the required cmap color scale
-                if is_hsv:
-                    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+                #if is_hsv:
+                #    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
-                if is_lab:
-                    image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
+                #if is_lab:
+                #    image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
 
                 # Apply the transformation on the default planes when the channel value is None
                 if channel is None:
@@ -190,41 +190,41 @@ class TraditionalImageEnhancement:
                     image = np.clip(np.log1p(image), 0, 255)
 
                 # # Apply the transformation on the default planes when the channel value is None
-                # if channel is None:
-                #     if is_hsv:
-                #         if method == 'power':
-                #             image[:, :, 2] = np.clip(np.power(image[:, :, 2], value), 0, 255)
-                #
-                #         if method == 'exponential':
-                #             image[:, :, 2] = np.clip(np.exp(image[:, :, 2]), 0, 255)
-                #
-                #         if method == 'log':
-                #             image[:, :, 2] = np.clip(np.log1p(image[:, :, 2]), 0, 255)
-                #
-                #     if is_lab:
-                #
-                #         if method == 'power':
-                #             image[:, :, 0] = np.clip(np.power(image[:, :, 0], value), 0, 255)
-                #
-                #         if method == 'exponential':
-                #             image[:, :, 0] = np.clip(np.exp(image[:, :, 0]), 0, 255)
-                #
-                #         if method == 'log':
-                #             image[:, :, 0] = np.clip(np.log1p(image[:, :, 0]), 0, 255)
-                # else:
-                #     # If the channel validation passes, then apply the transformation on the specified planes
-                #     if validate_channel_param(channel=channel):
-                #         for x in channel:
-                #             image[:, :, x] = np.clip(np.power(image[:, :, x], value), 0, 255)
+                if channel is None:
+                     if is_hsv:
+                         if method == 'power':
+                             image[:, :, 2] = np.clip(np.power(image[:, :, 2], value), 0, 255)
 
-                if is_hsv:
-                    image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
-                if is_lab:
-                    image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
+                         if method == 'exponential':
+                             image[:, :, 2] = np.clip(np.exp(image[:, :, 2]), 0, 255)
+
+                         if method == 'log':
+                             image[:, :, 2] = np.clip(np.log1p(image[:, :, 2]), 0, 255)
+
+                     if is_lab:
+
+                         if method == 'power':
+                             image[:, :, 0] = np.clip(np.power(image[:, :, 0], value), 0, 255)
+
+                         if method == 'exponential':
+                             image[:, :, 0] = np.clip(np.exp(image[:, :, 0]), 0, 255)
+
+                         if method == 'log':
+                             image[:, :, 0] = np.clip(np.log1p(image[:, :, 0]), 0, 255)
+                else:
+                ## If the channel validation passes, then apply the transformation on the specified planes
+                    if validate_channel_param(channel=channel):
+                        for x in channel:
+                            image[:, :, x] = np.clip(np.power(image[:, :, x], value), 0, 255)
+
+                #if is_hsv:
+                 #   image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
+                #if is_lab:
+                 #   image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
 
                 image = image.astype(np.uint8)
 
-            plot_graph(self.image, image, self.is_color_image, 'Non Linear Equation')
+            plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
             return image
 
         except ValueError as ex:

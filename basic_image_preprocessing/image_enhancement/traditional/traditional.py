@@ -37,7 +37,7 @@ class TraditionalImageEnhancement:
             raise ex
 
     def linear_equation(self, slope: Union[int, float], constant: Union[int, float], cmap: str = None,
-                        plot: bool = True,
+                        plot_output: bool = True,
                         channel: List[int] = None) -> np.ndarray:
         """
         This definition will apply the linear equation formula on the given image
@@ -59,7 +59,13 @@ class TraditionalImageEnhancement:
 
                 Default value -> None. Will default to the cmap value specified during the object creation
 
-            channel -> Specify the channel index on which the transformation to be applied.
+            plot_output -> This is a boolean value which will instruct the program whether to display the
+                        images post pre-processing or not. Will throw value error if value other than the accepted value
+                        passed
+                Accepted values - True , False
+
+            channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
+                cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
                 Default value -> None
                 Accepted value -> [0, 1, 2]
         Output:
@@ -68,6 +74,10 @@ class TraditionalImageEnhancement:
         try:
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
+
+            if type(plot_output) is not bool:
+                raise ValueError(
+                    f"plot_output parameter takes only True or False boolean value. No other values allowed")
 
             if not self.is_color_image:
                 image = self.image.astype('float')
@@ -110,14 +120,9 @@ class TraditionalImageEnhancement:
                     image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
 
                 image = image.astype(np.uint8)
+                if plot_output:
+                    plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
 
-                if type(plot) is bool:
-                    if plot:
-                        plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
-                    else:
-                        breakpoint()
-                else:
-                    raise ValueError(f"The boolean value has to be passed [True|False]")
             return image
 
         except TypeError as ex:
@@ -134,7 +139,7 @@ class TraditionalImageEnhancement:
             raise Exception(f"An error occurred while trying to apply the linear equation on the given image - {ex}")
 
     def non_linear_equation(self, method: str, power_value: Union[int, float] = None, cmap: str = None,
-                            plot : bool = True,
+                            plot_output: bool = True,
                             channel: List[int] = None) -> np.ndarray:
         """
         This definition will apply the non-linear equation on the given image
@@ -163,6 +168,16 @@ class TraditionalImageEnhancement:
 
                 Default value -> None. Will default to the cmap value specified during the object creation
 
+            plot_output -> This is a boolean value which will instruct the program whether to display the
+                        images post pre-processing or not. Will throw value error if value other than the accepted value
+                        passed
+                Accepted values - True , False
+
+            channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
+                cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
+                Default value -> None
+                Accepted value -> [0, 1, 2]
+
         Output:
             numpy.ndarray -> image post applying the non-linear equation on the given image
         """
@@ -179,6 +194,10 @@ class TraditionalImageEnhancement:
             # Validating if power_value is available if the method is 'power'
             if method == 'power' and power_value is None:
                 raise CustomException(power_value_custom_exception)
+
+            if type(plot_output) is not bool:
+                raise ValueError(
+                    f"plot_output parameter takes only True or False boolean value. No other values allowed")
 
             if not self.is_color_image:
                 image = self.image.astype('float')
@@ -254,13 +273,9 @@ class TraditionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-            if type(plot) is bool:
-                if plot:
+                if plot_output:
                     plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
-                else:
-                    breakpoint()
-            else:
-                raise ValueError(f"The boolean value has to be passed [True|False]")
+
             return image
 
         except ValueError as ex:

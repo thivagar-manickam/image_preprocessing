@@ -37,6 +37,7 @@ class TraditionalImageEnhancement:
             raise ex
 
     def linear_equation(self, slope: Union[int, float], constant: Union[int, float], cmap: str = None,
+                        plot: bool = True,
                         channel: List[int] = None) -> np.ndarray:
         """
         This definition will apply the linear equation formula on the given image
@@ -110,7 +111,13 @@ class TraditionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-            plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
+                if type(plot) is bool:
+                    if plot:
+                        plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
+                    else:
+                        breakpoint()
+                else:
+                    raise ValueError(f"The boolean value has to be passed [True|False]")
             return image
 
         except TypeError as ex:
@@ -127,6 +134,7 @@ class TraditionalImageEnhancement:
             raise Exception(f"An error occurred while trying to apply the linear equation on the given image - {ex}")
 
     def non_linear_equation(self, method: str, power_value: Union[int, float] = None, cmap: str = None,
+                            plot : bool = True,
                             channel: List[int] = None) -> np.ndarray:
         """
         This definition will apply the non-linear equation on the given image
@@ -246,7 +254,13 @@ class TraditionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-            plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
+            if type(plot) is bool:
+                if plot:
+                    plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
+                else:
+                    breakpoint()
+            else:
+                raise ValueError(f"The boolean value has to be passed [True|False]")
             return image
 
         except ValueError as ex:

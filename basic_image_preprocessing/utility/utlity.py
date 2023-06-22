@@ -30,7 +30,7 @@ def load_image(image_path: str, cmap: str) -> Tuple[numpy.ndarray, bool]:
             raise CustomException("Invalid cmap value specified. cmap value can only be either gray or rgb")
 
         if image is None:
-            raise CustomException("Unable to sread the image. Please check the image path")
+            raise CustomException("Unable to read the image. Please check the image path")
 
         if cmap.lower() == 'rgb':
             is_color_image = True
@@ -83,4 +83,12 @@ def validate_channel_param(channel: List[int]) -> bool:
     if any(x > 2 for x in channel):
         raise CustomException(f"channel parameter can have values as 0, 1, 2. No other values are allowed")
 
+    return True
+
+
+def validate_param_list_value(value: str, list_of_accepted_values: List[str],
+                              function_name: str, param_name: str) -> bool:
+    if value not in list_of_accepted_values:
+        raise CustomException(f"In {function_name} transformation the '{param_name}' param can take only one of the "
+                              f"string available in {list_of_accepted_values}")
     return True

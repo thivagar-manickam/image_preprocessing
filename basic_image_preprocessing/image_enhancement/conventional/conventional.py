@@ -95,3 +95,85 @@ class ConventionalImageEnhancement:
 
         except Exception as ex:
             raise Exception(f"An error occurred while trying to apply the Equalization Histogram on the given image - {ex}")
+
+    def Clahe(self,clip_value:Union[int,float] = 2.0,title_grid_size:int=8,
+              cmap:str =None,plot_output:bool = True,
+              channel: List[int]=None):
+        try:
+
+            is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
+            is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
+
+
+            if type(plot_output) is not bool:
+                raise ValueError(
+                    f"plot_output parameter takes only True or False boolean value. No other values allowed")
+
+            if not self.is_color_image:
+                image = self.image.astype('float')
+                clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                clahe_img = clahe.apply(self.image)
+
+                return clahe_img
+
+            else:
+                image = self.image.copy()
+
+                if is_hsv:
+                    if channel is not None:
+                        raise CustomException("Non - Linear equation can be applied only on the Value channel for a HSV"
+                                              " type image. Remove the channel parameter")
+
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+
+                elif is_lab:
+                    if channel is not None:
+                        raise CustomException("Non - Linear equation can be applied only of the Lightness channel for a"
+                                              " LAB type image. Remove the channel parameter")
+
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
+
+                if channel is None:
+                    if is_hsv:
+                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                        image[:, :, 2] = np.clip(clahe.apply(image[:, :, 2]), 0, 255)
+
+                    elif is_lab:
+                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                        image[:, :, 0] = np.clip(clahe.apply(image[:, :, 0]), 0, 255)
+
+                    else:
+                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                        image[:, :, 0] = clahe.apply(image[:, :, 0])
+                        image[:, :, 1] = clahe.apply(image[:, :, 1])
+                        image[:, :, 2] = clahe.apply(image[:, :, 2])
+                        image = image
+
+                else:
+                 #If the channel validation passes, then apply the transformation on the specified planes
+                    if validate_channel_param(channel=channel):
+                        for x in channel:
+                            clahe = cv2.createCLAHE(clipLimit=clip_value,
+                                                    tileGridSize=(title_grid_size, title_grid_size))
+                            image[:, :, x] = np.clip(clahe.apply(image[:, :, x]), 0, 255)
+
+                if is_hsv:
+                    image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
+                if is_lab:
+                    image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
+
+                image = image.astype(np.uint8)
+
+                if plot_output:
+                    plot_graph(self.image, image, self.is_color_image, f'Clahe Histogram')
+
+            return image
+
+        except ValueError as ex:
+            raise ValueError(ex)
+
+        except CustomException as ex:
+            raise CustomException(ex)
+
+        except Exception as ex:
+            raise Exception(f"An error occurred while trying to apply the Clahe Algorithm on the given image - {ex}")

@@ -2,11 +2,11 @@ import numpy as np
 import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
-from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param, \
-    validate_param_list_value
+from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param
 from typing import List, Union
 
 filterwarnings('ignore')
+
 
 class ConventionalImageEnhancement:
     def __init__(self, image_path: str, cmap: str):
@@ -23,13 +23,11 @@ class ConventionalImageEnhancement:
             raise ex
 
     def equalization_histogram(self, cmap: str = None,
-                            plot_output: bool = True,
-                            channel: List[int] = None) -> np.ndarray:
+                               plot_output: bool = True,
+                               channel: List[int] = None) -> np.ndarray:
         try:
-
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
-
 
             if type(plot_output) is not bool:
                 raise ValueError(
@@ -37,24 +35,20 @@ class ConventionalImageEnhancement:
 
             if not self.is_color_image:
                 image = self.image.astype('float')
-
-                image = cv2.equalizeHist(self.image)
-
-
+                image = cv2.equalizeHist(image)
             else:
                 image = self.image.copy()
-
                 if is_hsv:
                     if channel is not None:
-                        raise CustomException("Non - Linear equation can be applied only on the Value channel for a HSV"
-                                              " type image. Remove the channel parameter")
+                        raise CustomException("Equalization Histogram can be applied only on the Value channel for a"
+                                              " HSV type image. Remove the channel parameter")
 
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
                 elif is_lab:
                     if channel is not None:
-                        raise CustomException("Non - Linear equation can be applied only of the Lightness channel for a"
-                                              " LAB type image. Remove the channel parameter")
+                        raise CustomException("Equalization Histogram can be applied only of the Lightness channel for "
+                                              "a LAB type image. Remove the channel parameter")
 
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
 
@@ -67,10 +61,8 @@ class ConventionalImageEnhancement:
                         image[:, :, 0] = np.clip(cv2.equalizeHist(image[:, :, 0]), 0, 255)
                         image[:, :, 1] = np.clip(cv2.equalizeHist(image[:, :, 1]), 0, 255)
                         image[:, :, 2] = np.clip(cv2.equalizeHist(image[:, :, 2]), 0, 255)
-                        eq_image = image
-
                 else:
-                 #If the channel validation passes, then apply the transformation on the specified planes
+                    # If the channel validation passes, then apply the transformation on the specified planes
                     if validate_channel_param(channel=channel):
                         for x in channel:
                             image[:, :, x] = np.clip(cv2.equalizeHist(image[:, :, x]), 0, 255)
@@ -94,16 +86,15 @@ class ConventionalImageEnhancement:
             raise CustomException(ex)
 
         except Exception as ex:
-            raise Exception(f"An error occurred while trying to apply the Equalization Histogram on the given image - {ex}")
+            raise Exception(
+                f"An error occurred while trying to apply the Equalization Histogram on the given image - {ex}")
 
-    def clahe(self,clip_value:Union[int,float] = 2.0,title_grid_size:int=8,
-              cmap:str =None,plot_output:bool = True,
-              channel: List[int]=None):
+    def clahe(self, clip_value: Union[int, float] = 2.0, title_grid_size: int = 8,
+              cmap: str = None, plot_output: bool = True,
+              channel: List[int] = None):
         try:
-
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
-
 
             if type(plot_output) is not bool:
                 raise ValueError(
@@ -112,22 +103,20 @@ class ConventionalImageEnhancement:
             if not self.is_color_image:
                 image = self.image.astype('float')
                 clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
-                image = clahe.apply(self.image)
-
-
+                image = clahe.apply(image)
             else:
                 image = self.image.copy()
 
                 if is_hsv:
                     if channel is not None:
-                        raise CustomException("Non - Linear equation can be applied only on the Value channel for a HSV"
+                        raise CustomException("CLAHE transformation can be applied only on the Value channel for a HSV"
                                               " type image. Remove the channel parameter")
 
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
                 elif is_lab:
                     if channel is not None:
-                        raise CustomException("Non - Linear equation can be applied only of the Lightness channel for a"
+                        raise CustomException("CLAHE transformation can be applied only of the Lightness channel for a"
                                               " LAB type image. Remove the channel parameter")
 
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
@@ -149,7 +138,7 @@ class ConventionalImageEnhancement:
                         image = image
 
                 else:
-                 #If the channel validation passes, then apply the transformation on the specified planes
+                    # If the channel validation passes, then apply the transformation on the specified planes
                     if validate_channel_param(channel=channel):
                         for x in channel:
                             clahe = cv2.createCLAHE(clipLimit=clip_value,
@@ -175,4 +164,5 @@ class ConventionalImageEnhancement:
             raise CustomException(ex)
 
         except Exception as ex:
-            raise Exception(f"An error occurred while trying to apply the Clahe Algorithm on the given image - {ex}")
+            raise Exception(f"An error occurred while trying to apply the CLAHE transformation on "
+                            f"the given image - {ex}")

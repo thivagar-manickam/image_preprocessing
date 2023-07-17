@@ -22,7 +22,7 @@ class ConventionalImageEnhancement:
         except CustomException as ex:
             raise ex
 
-    def Equalization_histogram(self, cmap: str = None,
+    def equalization_histogram(self, cmap: str = None,
                             plot_output: bool = True,
                             channel: List[int] = None) -> np.ndarray:
         try:
@@ -39,7 +39,7 @@ class ConventionalImageEnhancement:
                 image = self.image.astype('float')
 
                 image = cv2.equalizeHist(self.image)
-                return image
+
 
             else:
                 image = self.image.copy()
@@ -82,8 +82,8 @@ class ConventionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-                if plot_output:
-                    plot_graph(self.image, image, self.is_color_image, f'Equalization Histogram')
+            if plot_output:
+                plot_graph(self.image, image, self.is_color_image, f'Equalization Histogram')
 
             return image
 
@@ -96,7 +96,7 @@ class ConventionalImageEnhancement:
         except Exception as ex:
             raise Exception(f"An error occurred while trying to apply the Equalization Histogram on the given image - {ex}")
 
-    def Clahe(self,clip_value:Union[int,float] = 2.0,title_grid_size:int=8,
+    def clahe(self,clip_value:Union[int,float] = 2.0,title_grid_size:int=8,
               cmap:str =None,plot_output:bool = True,
               channel: List[int]=None):
         try:
@@ -112,9 +112,8 @@ class ConventionalImageEnhancement:
             if not self.is_color_image:
                 image = self.image.astype('float')
                 clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
-                clahe_img = clahe.apply(self.image)
+                image = clahe.apply(self.image)
 
-                return clahe_img
 
             else:
                 image = self.image.copy()
@@ -164,8 +163,8 @@ class ConventionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-                if plot_output:
-                    plot_graph(self.image, image, self.is_color_image, f'Clahe Histogram')
+            if plot_output:
+                plot_graph(self.image, image, self.is_color_image, f'Clahe Histogram')
 
             return image
 

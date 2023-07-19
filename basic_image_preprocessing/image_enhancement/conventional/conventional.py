@@ -25,6 +25,38 @@ class ConventionalImageEnhancement:
     def equalization_histogram(self, cmap: str = None,
                                plot_output: bool = True,
                                channel: List[int] = None) -> np.ndarray:
+        """
+                This definition will apply the equalization equation on the given image
+                with the value and method given in the parameters
+
+                Input:
+
+                    cmap -> This value will denote on which plane the transformation needs to be applied on provided the
+                        cmap during object creation was mentioned as rgb
+                        Accepted value:
+                            'gray' -> will apply the transformation on the gray scale image
+                            'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
+                                    apply transformation on all the three channels
+                            'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
+                                    will throw an error
+                            'lab' -> will apply the transformation only on the lightness channel. If the channel param is
+                                    specified will throw an error
+
+                        Default value -> None. Will default to the cmap value specified during the object creation
+
+                    plot_output -> This is a boolean value which will instruct the program whether to display the
+                                images post pre-processing or not. Will throw value error if value other than the accepted value
+                                passed
+                        Accepted values - True , False
+
+                    channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
+                        cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
+                        Default value -> None
+                        Accepted value -> [0, 1, 2]
+
+                Output:
+                    numpy.ndarray -> image post applying the equalization equation on the given image
+                """
         try:
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
@@ -89,9 +121,55 @@ class ConventionalImageEnhancement:
             raise Exception(
                 f"An error occurred while trying to apply the Equalization Histogram on the given image - {ex}")
 
-    def clahe(self, clip_value: Union[int, float] = 2.0, title_grid_size: int = 8,
+    def clahe(self, clip_value: Union[int, float] = 2.0, tile_grid_size: int = 8,
               cmap: str = None, plot_output: bool = True,
               channel: List[int] = None):
+
+        """
+        This definition will apply the equalization equation on the given image
+        with the value and method given in the parameters
+
+                Input:
+
+                    clip_value -> This parameter sets the threshold for contrast limiting. It is the contrast limit for
+                    localized changes in contrast.
+
+                    Accepted value -> Int or Float
+                    Default value -> 2.0
+
+                    tile_grid_size -> This sets the number of tiles in the row and column.
+                    It is used while the image is divided into tiles for applying CLAHE.
+
+                    Accepted value -> Int
+                    Default value -> 8
+
+                    cmap -> This value will denote on which plane the transformation needs to be applied on provided the
+                                cmap during object creation was mentioned as rgb
+                                Accepted value:
+                                    'gray' -> will apply the transformation on the gray scale image
+                                    'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
+                                            apply transformation on all the three channels
+                                    'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
+                                            will throw an error
+                                    'lab' -> will apply the transformation only on the lightness channel. If the channel param is
+                                            specified will throw an error
+
+                                Default value -> None. Will default to the cmap value specified during the object creation
+
+                            plot_output -> This is a boolean value which will instruct the program whether to display the
+                                        images post pre-processing or not. Will throw value error if value other than the accepted value
+                                        passed
+                                Accepted values - True , False
+
+                            channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
+                                cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
+                                Default value -> None
+                                Accepted value -> [0, 1, 2]
+
+                Output:
+                    numpy.ndarray -> image post applying the equalization equation on the given image
+        """
+        
         try:
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
@@ -102,7 +180,7 @@ class ConventionalImageEnhancement:
 
             if not self.is_color_image:
                 image = self.image.astype('float')
-                clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(tile_grid_size, tile_grid_size))
                 image = clahe.apply(image)
             else:
                 image = self.image.copy()
@@ -123,15 +201,15 @@ class ConventionalImageEnhancement:
 
                 if channel is None:
                     if is_hsv:
-                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(tile_grid_size, tile_grid_size))
                         image[:, :, 2] = np.clip(clahe.apply(image[:, :, 2]), 0, 255)
 
                     elif is_lab:
-                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(tile_grid_size, tile_grid_size))
                         image[:, :, 0] = np.clip(clahe.apply(image[:, :, 0]), 0, 255)
 
                     else:
-                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(title_grid_size, title_grid_size))
+                        clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(tile_grid_size, tile_grid_size))
                         image[:, :, 0] = clahe.apply(image[:, :, 0])
                         image[:, :, 1] = clahe.apply(image[:, :, 1])
                         image[:, :, 2] = clahe.apply(image[:, :, 2])
@@ -142,7 +220,7 @@ class ConventionalImageEnhancement:
                     if validate_channel_param(channel=channel):
                         for x in channel:
                             clahe = cv2.createCLAHE(clipLimit=clip_value,
-                                                    tileGridSize=(title_grid_size, title_grid_size))
+                                                    tileGridSize=(tile_grid_size, tile_grid_size))
                             image[:, :, x] = np.clip(clahe.apply(image[:, :, x]), 0, 255)
 
                 if is_hsv:

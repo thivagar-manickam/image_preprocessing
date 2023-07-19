@@ -26,37 +26,36 @@ class ConventionalImageEnhancement:
                                plot_output: bool = True,
                                channel: List[int] = None) -> np.ndarray:
         """
-                This definition will apply the equalization equation on the given image
-                with the value and method given in the parameters
+        This definition will apply the histogram equalization transformation on the given image
+        with the value and method given in the parameters
 
-                Input:
+        Input:
+            cmap -> This value will denote on which plane the transformation needs to be applied on, provided the
+                cmap during object creation was mentioned as rgb
+                Accepted value:
+                    'gray' -> will apply the transformation on the gray scale image
+                    'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
+                            apply transformation on all the three channels
+                    'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
+                            will throw an error
+                    'lab' -> will apply the transformation only on the lightness channel. If the channel param is
+                            specified will throw an error
 
-                    cmap -> This value will denote on which plane the transformation needs to be applied on provided the
-                        cmap during object creation was mentioned as rgb
-                        Accepted value:
-                            'gray' -> will apply the transformation on the gray scale image
-                            'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
-                                    apply transformation on all the three channels
-                            'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
-                                    will throw an error
-                            'lab' -> will apply the transformation only on the lightness channel. If the channel param is
-                                    specified will throw an error
+                Default value -> None. Will default to the cmap value specified during the object creation
 
-                        Default value -> None. Will default to the cmap value specified during the object creation
+            plot_output -> This is a boolean value which will instruct the program whether to display the
+                        images post pre-processing or not. Will throw value error if value other than the accepted value
+                        passed
+                Accepted values - True , False
 
-                    plot_output -> This is a boolean value which will instruct the program whether to display the
-                                images post pre-processing or not. Will throw value error if value other than the accepted value
-                                passed
-                        Accepted values - True , False
+            channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
+                cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
+                Default value -> None
+                Accepted value -> [0, 1, 2]
 
-                    channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
-                        cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
-                        Default value -> None
-                        Accepted value -> [0, 1, 2]
-
-                Output:
-                    numpy.ndarray -> image post applying the equalization equation on the given image
-                """
+        Output:
+            numpy.ndarray -> image post applying the equalization equation on the given image
+        """
         try:
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
@@ -126,48 +125,46 @@ class ConventionalImageEnhancement:
               channel: List[int] = None):
 
         """
-        This definition will apply the equalization equation on the given image
+        This definition will apply the CLAHE transformation on the given image
         with the value and method given in the parameters
 
-                Input:
+        Input:
+            clip_value -> This parameter sets the threshold for contrast limiting. It is the contrast limit for
+            localized changes in contrast.
+                Accepted value -> Int or Float
+                Default value -> 2.0
 
-                    clip_value -> This parameter sets the threshold for contrast limiting. It is the contrast limit for
-                    localized changes in contrast.
+            tile_grid_size -> This sets the number of tiles in the row and column.
+                It is used while the image is divided into tiles for applying CLAHE.
 
-                    Accepted value -> Int or Float
-                    Default value -> 2.0
+                Accepted value -> Int
+                Default value -> 8
 
-                    tile_grid_size -> This sets the number of tiles in the row and column.
-                    It is used while the image is divided into tiles for applying CLAHE.
+            cmap -> This value will denote on which plane the transformation needs to be applied on provided the
+                cmap during object creation was mentioned as rgb
+                Accepted value:
+                    'gray' -> will apply the transformation on the gray scale image
+                    'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
+                            apply transformation on all the three channels
+                    'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
+                            will throw an error
+                    'lab' -> will apply the transformation only on the lightness channel. If the channel param is
+                            specified will throw an error
 
-                    Accepted value -> Int
-                    Default value -> 8
+                Default value -> None. Will default to the cmap value specified during the object creation
 
-                    cmap -> This value will denote on which plane the transformation needs to be applied on provided the
-                                cmap during object creation was mentioned as rgb
-                                Accepted value:
-                                    'gray' -> will apply the transformation on the gray scale image
-                                    'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
-                                            apply transformation on all the three channels
-                                    'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
-                                            will throw an error
-                                    'lab' -> will apply the transformation only on the lightness channel. If the channel param is
-                                            specified will throw an error
+            plot_output -> This is a boolean value which will instruct the program whether to display the
+                        images post pre-processing or not. Will throw value error if value other than the accepted value
+                        passed
+                Accepted values - True , False
 
-                                Default value -> None. Will default to the cmap value specified during the object creation
+            channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
+                cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
+                Default value -> None
+                Accepted value -> [0, 1, 2]
 
-                            plot_output -> This is a boolean value which will instruct the program whether to display the
-                                        images post pre-processing or not. Will throw value error if value other than the accepted value
-                                        passed
-                                Accepted values - True , False
-
-                            channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
-                                cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
-                                Default value -> None
-                                Accepted value -> [0, 1, 2]
-
-                Output:
-                    numpy.ndarray -> image post applying the equalization equation on the given image
+        Output:
+            numpy.ndarray -> image post applying the equalization equation on the given image
         """
         
         try:

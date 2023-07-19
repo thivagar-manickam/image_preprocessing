@@ -65,6 +65,7 @@ class ConventionalImageEnhancement:
                     f"plot_output parameter takes only True or False boolean value. No other values allowed")
 
             if not self.is_color_image:
+                image = self.image
                 image = cv2.equalizeHist(image)
             else:
                 image = self.image.copy()
@@ -175,6 +176,7 @@ class ConventionalImageEnhancement:
                     f"plot_output parameter takes only True or False boolean value. No other values allowed")
 
             if not self.is_color_image:
+                image = self.image
                 clahe = cv2.createCLAHE(clipLimit=clip_value, tileGridSize=(tile_grid_size, tile_grid_size))
                 image = clahe.apply(image)
             else:

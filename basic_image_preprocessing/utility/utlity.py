@@ -97,7 +97,7 @@ def validate_param_list_value(value: str, list_of_accepted_values: List[str],
 def validate_cmap_value(value, function_name: str, param_name: str) -> bool:
     list_of_accepted_values = ['gray', 'rgb', 'hsv', 'lab']
 
-    if value.lower() not in list_of_accepted_values:
+    if value is not None and value.lower() not in list_of_accepted_values:
         raise ValueError(f"In {function_name} transformation the '{param_name}' param can take only one of the string "
                          f"available in {list_of_accepted_values}")
     return True

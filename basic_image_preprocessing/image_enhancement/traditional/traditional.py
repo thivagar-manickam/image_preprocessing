@@ -3,7 +3,7 @@ import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
 from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param, \
-    validate_param_list_value
+    validate_param_list_value, validate_cmap_value
 from typing import List, Union
 
 filterwarnings('ignore')
@@ -72,6 +72,8 @@ class TraditionalImageEnhancement:
             numpy.ndarray -> image post applying the linear equation formula on the given image
         """
         try:
+            validate_cmap_value(cmap, 'Linear Equation', 'cmap')
+
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
 
@@ -186,6 +188,7 @@ class TraditionalImageEnhancement:
             power_value_custom_exception = f"power_value is a required param when applying the power transformation." \
                                            f" Please pass in the power_value parameter"
 
+            validate_cmap_value(cmap, 'Non - Linear', 'cmap')
             validate_param_list_value(method, ['power', 'exponential', 'log'], 'Non - Linear', 'method')
 
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False

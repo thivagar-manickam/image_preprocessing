@@ -122,8 +122,8 @@ class TraditionalImageEnhancement:
                     image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
 
                 image = image.astype(np.uint8)
-                if plot_output:
-                    plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
+            if plot_output:
+                plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
 
             return image
 
@@ -276,8 +276,8 @@ class TraditionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-                if plot_output:
-                    plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
+            if plot_output:
+                plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
 
             return image
 

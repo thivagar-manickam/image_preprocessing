@@ -1,5 +1,5 @@
 from basic_image_preprocessing.image_enhancement.traditional.traditional import TraditionalImageEnhancement
-
+from basic_image_preprocessing.image_enhancement.conventional.conventional import ConventionalImageEnhancement
 __all__ = [
-    TraditionalImageEnhancement
+    TraditionalImageEnhancement,ConventionalImageEnhancement
 ]

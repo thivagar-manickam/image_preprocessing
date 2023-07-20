@@ -101,3 +101,27 @@ def validate_cmap_value(value, function_name: str, param_name: str) -> bool:
         raise ValueError(f"In {function_name} transformation the '{param_name}' param can take only one of the string "
                          f"available in {list_of_accepted_values}")
     return True
+
+def edge_plot_graph(original_image, processed_image, is_color_image_flag, pre_processing_method) -> None:
+    """
+    plot_graph -> A generic definition to plot the original image and the processed image side
+    by side for comparison purposes
+
+    :param original_image:
+    :param processed_image:
+    :param is_color_image_flag:
+    :param pre_processing_method:
+    :return None:
+    """
+    plt.figure(figsize=(20, 10))
+
+    plt.subplot(1, 3, 1)
+    plt.title("Original Image")
+    if is_color_image_flag:
+        plt.imshow(original_image)
+    else:
+        plt.imshow(original_image, cmap="gray")
+
+    plt.subplot(1, 3, 2)
+    plt.title(f"Image post applying the {pre_processing_method} transformation")
+    plt.imshow(processed_image, cmap="gray")

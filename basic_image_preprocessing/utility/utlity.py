@@ -40,15 +40,17 @@ def load_image(image_path: str, cmap: str) -> Tuple[numpy.ndarray, bool]:
         raise FileNotFoundError(f"File not found: {image_path}")
 
 
-def plot_graph(original_image, processed_image, is_color_image_flag, pre_processing_method) -> None:
+def plot_graph(original_image, processed_image, is_color_image_flag, pre_processing_method,
+               is_edge_detection: bool = False) -> None:
     """
     plot_graph -> A generic definition to plot the original image and the processed image side
     by side for comparison purposes
 
-    :param original_image:
-    :param processed_image:
-    :param is_color_image_flag:
-    :param pre_processing_method:
+    :param original_image: Original image on which the transformation was performed
+    :param processed_image: Image after the transformation is applied
+    :param is_color_image_flag: Flag to identify if it's a color and black and white image
+    :param pre_processing_method: String representing the Transformation type
+    :param is_edge_detection: Flag to denote if is an edge detection algorithm
     :return None:
     """
     plt.figure(figsize=(20, 10))
@@ -62,10 +64,10 @@ def plot_graph(original_image, processed_image, is_color_image_flag, pre_process
 
     plt.subplot(1, 3, 2)
     plt.title(f"Image post applying the {pre_processing_method} transformation")
-    if is_color_image_flag:
-        plt.imshow(processed_image)
-    else:
+    if (is_color_image_flag and is_edge_detection) or (not is_color_image_flag):
         plt.imshow(processed_image, cmap="gray")
+    else:
+        plt.imshow(processed_image)
 
 
 def validate_channel_param(channel: List[int]) -> bool:
@@ -88,6 +90,15 @@ def validate_channel_param(channel: List[int]) -> bool:
 
 def validate_param_list_value(value: str, list_of_accepted_values: List[str],
                               function_name: str, param_name: str) -> bool:
+    """
+    Definition used to verify whether the given value is available in the list of accepted values for the
+    particular parameter
+    :param value:
+    :param list_of_accepted_values:
+    :param function_name:
+    :param param_name:
+    :return:
+    """
     if value not in list_of_accepted_values:
         raise CustomException(f"In {function_name} transformation the '{param_name}' param can take only one of the "
                               f"string available in {list_of_accepted_values}")
@@ -95,6 +106,15 @@ def validate_param_list_value(value: str, list_of_accepted_values: List[str],
 
 
 def validate_cmap_value(value, function_name: str, param_name: str) -> bool:
+    """
+    Definition to validate if the cmap value given in the definitions are
+    one among the below values:
+    [ gray, rgb, hsv, lab ]
+    :param value:
+    :param function_name:
+    :param param_name:
+    :return:
+    """
     list_of_accepted_values = ['gray', 'rgb', 'hsv', 'lab']
 
     if value is not None and value.lower() not in list_of_accepted_values:
@@ -102,26 +122,17 @@ def validate_cmap_value(value, function_name: str, param_name: str) -> bool:
                          f"available in {list_of_accepted_values}")
     return True
 
-def edge_plot_graph(original_image, processed_image, is_color_image_flag, pre_processing_method) -> None:
+
+def validate_param_type(param_name, param_value, param_type, expected_type):
     """
-    plot_graph -> A generic definition to plot the original image and the processed image side
-    by side for comparison purposes
-
-    :param original_image:
-    :param processed_image:
-    :param is_color_image_flag:
-    :param pre_processing_method:
-    :return None:
+    Definition to validate if the param type is same as specified in the definition
+    If not an error is raised
+    :param param_name:
+    :param param_value:
+    :param param_type:
+    :param expected_type:
+    :return:
     """
-    plt.figure(figsize=(20, 10))
-
-    plt.subplot(1, 3, 1)
-    plt.title("Original Image")
-    if is_color_image_flag:
-        plt.imshow(original_image)
-    else:
-        plt.imshow(original_image, cmap="gray")
-
-    plt.subplot(1, 3, 2)
-    plt.title(f"Image post applying the {pre_processing_method} transformation")
-    plt.imshow(processed_image, cmap="gray")
+    if param_value is not None:
+        if param_type != expected_type:
+            raise ValueError(f"{param_name} is expected to be in {expected_type} but received value is {param_type}")

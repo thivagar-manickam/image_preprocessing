@@ -311,8 +311,7 @@ class ConventionalImageEnhancement:
         except Exception as ex:
             raise Exception(f"An error occurred while trying to apply the Canny Edge detection Algorithm on "
                             f"the given image - {ex}")
-    def laplacian(self, kernel: int = 3, smoothness: bool = True, cmap: str = None,
-                  channel: List[int] = None,
+    def laplacian(self, kernel: int = 3, smoothness: bool = True,
                   plot_output: bool = True):
         """
         This definition will apply the laplacian edge detection  on the given image
@@ -325,27 +324,7 @@ class ConventionalImageEnhancement:
                 smoothness: bool value whether the image has to be removed by noise before edge detection or not
                             Accepted value -> True or False
                             Default value -> True
-                cmap: This value will denote on which plane the transformation needs to be applied on provided the
-                    cmap during object creation was mentioned as rgb
-                        Accepted value:
 
-                        'gray' -> will apply the transformation on the gray scale image
-
-                        'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
-                                                apply transformation on all the three channels
-                        'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
-                                            will throw an error
-                        'lab' -> will apply the transformation only on the lightness channel. If the channel param is
-                                                specified will throw an error
-
-                        Default value -> None. Will default to the cmap value specified during the object creation
-
-                channel: Specify the channel index on which the transformation to be applied. Only allowed when the
-                                    cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
-
-                                    Default value -> None
-
-                                    Accepted value -> [0, 1, 2]
                 plot_output: This is a boolean value which will instruct the program whether to display the
                                 images post pre-processing or not. Will throw value error if value other than the accepted value passed
 
@@ -356,10 +335,6 @@ class ConventionalImageEnhancement:
 
         """
         try:
-            validate_cmap_value(cmap, 'LAPLACIAN', 'cmap')
-
-            is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
-            is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
 
             if type(plot_output) is not bool:
                 raise ValueError(
@@ -377,64 +352,23 @@ class ConventionalImageEnhancement:
 
             else:
                 image = self.image.copy()
-
-                if is_hsv:
-                    if channel is not None:
-                        raise CustomException("Laplacian edge detection can be applied only on the Value channel for a HSV"
-                                              " type image. Remove the channel parameter")
-
-                    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
-
-                elif is_lab:
-                    if channel is not None:
-                        raise CustomException("Laplacian edge detection can be applied only of the Lightness channel for"
-                                              " a LAB type image. Remove the channel parameter")
-
-                    image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
-
                 if smoothness:
 
-                    if channel is None:
-                        if is_hsv:
-                            smooth = cv2.GaussianBlur(image[:, :, 2], (kernel, kernel), 0,
+                       smooth = cv2.GaussianBlur(image[:, :, 0], (kernel, kernel), 0,
                                                       borderType=cv2.BORDER_REFLECT)
-                            laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
-                            image = np.uint16(np.absolute(laplacian))
-
-
-                        elif is_lab:
-                            smooth = cv2.GaussianBlur(image[:, :, 0], (kernel, kernel), 0,
+                       smooth = cv2.GaussianBlur(image[:, :, 1], (kernel, kernel), 0,
                                                       borderType=cv2.BORDER_REFLECT)
-                            laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
-                            image = np.uint16(np.absolute(laplacian))
-
-                        else:
-                            smooth = cv2.GaussianBlur(image[:, :, 0], (kernel, kernel), 0,
+                       smooth = cv2.GaussianBlur(image[:, :, 2], (kernel, kernel), 0,
                                                       borderType=cv2.BORDER_REFLECT)
-                            smooth = cv2.GaussianBlur(image[:, :, 1], (kernel, kernel), 0,
-                                                      borderType=cv2.BORDER_REFLECT)
-                            smooth = cv2.GaussianBlur(image[:, :, 2], (kernel, kernel), 0,
-                                                      borderType=cv2.BORDER_REFLECT)
-                            laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
-                            image = np.uint16(np.absolute(laplacian))
+                       laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
+                       image = np.uint16(np.absolute(laplacian))
 
                 else:
-                    if channel is None:
-                        if is_hsv:
-                            laplacian = cv2.Laplacian(image[:,:,2], cv2.CV_64F)
 
-                            image = np.uint16(np.absolute(laplacian))
-
-                        elif is_lab:
-                            laplacian = cv2.Laplacian(image[:, :, 0], cv2.CV_64F)
-
-                            image = np.uint16(np.absolute(laplacian))
-
-                        else:
-                            laplacian = cv2.Laplacian(image[:,:,0], cv2.CV_64F)
-                            laplacian = cv2.Laplacian(image[:,:,1], cv2.CV_64F)
-                            laplacian = cv2.Laplacian(image[:,:,2], cv2.CV_64F)
-                            image = np.uint16(np.absolute(laplacian))
+                        laplacian = cv2.Laplacian(image[:,:,0], cv2.CV_64F)
+                        laplacian = cv2.Laplacian(image[:,:,1], cv2.CV_64F)
+                        laplacian = cv2.Laplacian(image[:,:,2], cv2.CV_64F)
+                        image = np.uint16(np.absolute(laplacian))
 
             if plot_output:
                 plot_graph(self.image, image, self.is_color_image, f'Laplacian Edge detection',is_edge_detection=True)

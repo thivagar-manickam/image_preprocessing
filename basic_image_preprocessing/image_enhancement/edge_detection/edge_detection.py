@@ -3,7 +3,8 @@ import numpy as np
 import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
-from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_param_type, create_kernel_mask
+from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_param_type, \
+    create_kernel_mask, validate_param_list_value
 
 filterwarnings('ignore')
 
@@ -130,7 +131,7 @@ class ImageEdgeDetection:
 
             if l2gradient is not None and aperture_size is not None:
                 edge_detail = cv2.Canny(self.image, lower_threshold, upper_threshold, apertureSize=aperture_size,
-                                  L2gradient=l2gradient)
+                                        L2gradient=l2gradient)
 
             elif aperture_size is not None:
                 edge_detail = cv2.Canny(self.image, lower_threshold, upper_threshold, apertureSize=aperture_size)
@@ -157,21 +158,46 @@ class ImageEdgeDetection:
             raise Exception(f"An error occurred while trying to apply the Canny Edge detection Algorithm on "
                             f"the given image - {ex}")
 
-    def sharpening_filter(self, kernel_size, custom_kernel_array:numpy.ndarray = None, plot_output: bool = True):
+    def edge_filtering(self, kernel_size: int, filter_type: str, custom_filter_array: numpy.ndarray = None,
+                       plot_output: bool = True):
+        """
+        This definition will apply either the sharpening filter or the edge detection filter when the
+        custom_kernel_array is not passed
+
+        :param kernel_size: Size of the filter array to be created. Should be an odd positive integer
+        :param filter_type: The filter_type used to define what type of filtering mask to be applied on the image
+                            Accepted Value -> 'sharpen', 'edge_detection'
+                            Uses the 'custom' value when the custom_filter_array is passed.
+
+        :param custom_filter_array: A custom numpy square matrix array, whose row and column values should be equal to
+                                    the kernel size passed
+        :param plot_output: This is a boolean value which will instruct the program whether to display the
+                            images post pre-processing or not. Will throw value error if value other than the accepted value
+                            passed
+                    Accepted values - True , False
+        :return: numpy.ndarray -> image post applying the required filtering on the given image
+        """
         try:
-            if custom_kernel_array is not None:
-                kernel = create_kernel_mask(kernel_size, 'custom', custom_kernel_array)
+            validate_param_list_value(filter_type, ['sharpen', 'edge_detection'], 'Edge Filtering', 'filter_type')
+
+            if custom_filter_array is not None:
+                kernel = create_kernel_mask(kernel_size, 'custom', custom_filter_array)
 
             else:
-                kernel = create_kernel_mask(kernel_size, 'sharpen')
+                kernel = create_kernel_mask(kernel_size, filter_type)
 
-            sharpened_image = cv2.filter2D(self.image, -1, kernel)
+            image = self.image
+
+            if filter_type == 'edge_detection':
+                image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
+
+            processed_image = cv2.filter2D(image, -1, kernel)
 
             if plot_output:
-                plot_graph(self.image, sharpened_image, self.is_color_image, f'Sharpening Filter Mask',
+                plot_graph(self.image, processed_image, self.is_color_image, f'Sharpening Filter Mask',
                            is_edge_detection=True)
 
-            return sharpened_image
+            return processed_image
 
         except ValueError as ex:
             raise ValueError(ex)

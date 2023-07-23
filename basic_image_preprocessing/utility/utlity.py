@@ -170,11 +170,6 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
             raise ValueError("The rows and columns for the custom kernel array should be equal to the specified"
                              " kernel size")
 
-    if kernel_type not in ['identity', 'box', 'gaussian', 'sharpen', 'edge_detection', 'custom']:
-        raise ValueError(
-            "Invalid kernel_type. Supported Values are: 'identity', 'box', 'gaussian', "
-            "'sharpen', 'edge_detection', 'custom'")
-
     if kernel_type == 'identity':
         kernel = np.zeros((kernel_size, kernel_size), dtype=np.float32)
         center = kernel_size // 2

@@ -120,8 +120,8 @@ class TraditionalImageEnhancement:
                     image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
 
                 image = image.astype(np.uint8)
-                if plot_output:
-                    plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
+            if plot_output:
+                plot_graph(self.image, image, self.is_color_image, 'Linear Equation')
 
             return image
 
@@ -273,8 +273,8 @@ class TraditionalImageEnhancement:
 
                 image = image.astype(np.uint8)
 
-                if plot_output:
-                    plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
+            if plot_output:
+                plot_graph(self.image, image, self.is_color_image, f'Non Linear method - {method}')
 
             return image
 
@@ -285,4 +285,134 @@ class TraditionalImageEnhancement:
             raise CustomException(ex)
 
         except Exception as ex:
-            raise Exception(f"An error occurred while trying to apply the non-linear equation on the given image - {ex}")
+            raise Exception(f"An error occurred while trying to apply the math operation on the given image - {ex}")
+
+    def math_operation(self, method: str, value: Union[int, float], cmap: str = None, plot_output: bool = True
+                       , channel: List[int] = None) -> np.ndarray:
+
+        try:
+            custom_exception = f"value is a required param when applying the mathematical transformation." \
+                                           f" Please pass in the value parameter"
+
+            validate_param_list_value(method, ['division', 'subtraction', 'multiplication', 'addition'],
+                                      'Mathematical operations', 'method')
+
+            is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
+            is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
+
+            # Validating if power_value is available if the method'
+            if method and value is None:
+                raise CustomException(custom_exception)
+
+            if type(plot_output) is not bool:
+                raise ValueError(
+                    f"plot_output parameter takes only True or False boolean value. No other values allowed")
+
+            if not self.is_color_image:
+                image = self.image.astype(float)
+
+                if method == 'addition':
+                    image = np.clip(image+value, 0, 255).astype(np.uint8)
+
+                elif method == 'subtraction':
+                    image = np.clip(image - value, 0, 255).astype(np.uint8)
+
+                elif method == 'multiplication':
+                    image = np.clip(image * value, 0, 255).astype(np.uint8)
+
+                elif method == 'division':
+                    image = np.clip(image//value, 0, 255).astype(np.uint8)
+
+            else:
+                image = self.image.copy().astype(np.float32)
+
+                if is_hsv:
+                    if channel is not None:
+                        raise CustomException("Non - Linear equation can be applied only on the Value channel for a HSV"
+                                              " type image. Remove the channel parameter")
+
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+
+                elif is_lab:
+                    if channel is not None:
+                        raise CustomException("Non - Linear equation can be applied only of the Lightness channel for a"
+                                              " LAB type image. Remove the channel parameter")
+
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
+
+                # Apply the transformation on the default planes when the channel value is None
+                if channel is None:
+                    if is_hsv:
+                        if method == 'addition':
+                            image[:, :, 2] = np.clip(image[:, :, 2] + value, 0, 255)
+
+                        if method == 'subtraction':
+                            image[:, :, 2] = np.clip(image[:, :, 2] - value, 0, 255)
+
+                        if method == 'multiplication':
+                            image[:, :, 2] = np.clip(image[:, :, 2] * value, 0, 255)
+
+                        if method == 'division':
+                            image[:, :, 2] = np.clip(image[:, :, 2]//value, 0, 255)
+
+                    elif is_lab:
+                        if method == 'addition':
+                            image[:, :, 0] = np.clip(image[:, :, 0] + value, 0, 255)
+
+                        if method == 'subtraction':
+                            image[:, :, 0] = np.clip(image[:, :, 0] - value, 0, 255)
+
+                        if method == 'multiplication':
+                            image[:, :, 0] = np.clip(image[:, :, 0] * value, 0, 255)
+
+                        if method == 'division':
+                            image[:, :, 0] = np.clip(image[:, :, 0] // value, 0, 255)
+
+                    else:
+                        if method == 'addition':
+                            image = np.clip(image + value, 0, 255)
+
+                        elif method == 'subtraction':
+                            image = np.clip(image - value, 0, 255)
+
+                        elif method == 'multiplication':
+                            image = np.clip(image * value, 0, 255)
+
+                        elif method == 'division':
+                            image = np.clip(image // value, 0, 255)
+                else:
+                    # If the channel validation passes, then apply the transformation on the specified planes
+                    if validate_channel_param(channel=channel):
+                        if method == 'addition':
+                            for x in channel:
+                                image[:, :, x] = np.clip(image[:, :, x] + value, 0, 255)
+                        if method == 'subtraction':
+                            for x in channel:
+                                image[:, :, x] = np.clip((image[:, :, x] - value), 0, 255)
+                        if method == 'multiplication':
+                            for x in channel:
+                                image[:, :, x] = np.clip((image[:, :, x] * value), 0, 255)
+                        if method == 'division':
+                            for x in channel:
+                                image[:, :, x] = np.clip((image[:, :, x] // value), 0, 255)
+
+                if is_hsv:
+                    image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
+                if is_lab:
+                    image = cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
+
+                image = image.astype(np.uint8)
+
+            if plot_output:
+                plot_graph(self.image, image, self.is_color_image, f'Math Operation - {method}')
+
+            return image
+
+        except ValueError as ex:
+            raise ValueError(ex)
+
+        except CustomException as ex:
+            raise CustomException(ex)
+
+        except Exception as ex:
+            raise Exception(f"An error occurred while trying to apply the Math operation on the given image - {ex}")

@@ -366,8 +366,8 @@ class ConventionalImageEnhancement:
                 else:
 
                         laplacian = cv2.Laplacian(image[:,:,0], cv2.CV_64F)
-                        laplacian = cv2.Laplacian(image[:,:,1], cv2.CV_64F)
-                        laplacian = cv2.Laplacian(image[:,:,2], cv2.CV_64F)
+                        laplacian = cv2.Laplacian(laplacian[:,:,1], cv2.CV_64F)
+                        laplacian = cv2.Laplacian(laplacian[:,:,2], cv2.CV_64F)
                         image = np.uint16(np.absolute(laplacian))
 
             if plot_output:

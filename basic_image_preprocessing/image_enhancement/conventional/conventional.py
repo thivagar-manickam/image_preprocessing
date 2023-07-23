@@ -5,7 +5,7 @@ import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
 from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param, \
-    validate_cmap_value, validate_param_type
+    validate_cmap_value
 from typing import List, Union
 
 filterwarnings('ignore')

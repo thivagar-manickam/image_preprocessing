@@ -49,34 +49,17 @@ class ImageEdgeDetection:
                 raise ValueError(
                     f"plot_output parameter takes only True or False boolean value. No other values allowed")
 
-            if not self.is_color_image:
-                image = self.image.astype('float')
-                if smoothness:
-                    smooth = cv2.GaussianBlur(self.image, (kernel, kernel), 0, borderType=cv2.BORDER_REFLECT)
-                    laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
-                    image = np.uint16(np.absolute(laplacian))
-                else:
-                    laplacian = cv2.Laplacian(image, cv2.CV_64F)
-                    image = np.uint16(np.absolute(laplacian))
+            image = self.image
+            if self.is_color_image:
+                image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
 
+            if smoothness:
+                smooth = cv2.GaussianBlur(self.image, (kernel, kernel), 0, borderType=cv2.BORDER_REFLECT)
+                laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
+                image = np.uint16(np.absolute(laplacian))
             else:
-                image = self.image.copy()
-
-                if smoothness:
-                    smooth = cv2.GaussianBlur(image[:, :, 0], (kernel, kernel), 0,
-                                              borderType=cv2.BORDER_REFLECT)
-                    smooth = cv2.GaussianBlur(image[:, :, 1], (kernel, kernel), 0,
-                                              borderType=cv2.BORDER_REFLECT)
-                    smooth = cv2.GaussianBlur(image[:, :, 2], (kernel, kernel), 0,
-                                              borderType=cv2.BORDER_REFLECT)
-                    laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
-                    image = np.uint16(np.absolute(laplacian))
-
-                else:
-                    laplacian = cv2.Laplacian(image[:, :, 0], cv2.CV_64F)
-                    laplacian = cv2.Laplacian(image[:, :, 1], cv2.CV_64F)
-                    laplacian = cv2.Laplacian(image[:, :, 2], cv2.CV_64F)
-                    image = np.uint16(np.absolute(laplacian))
+                laplacian = cv2.Laplacian(image, cv2.CV_64F)
+                image = np.uint16(np.absolute(laplacian))
 
             if plot_output:
                 plot_graph(self.image, image, self.is_color_image, f'Laplacian Edge detection', is_edge_detection=True)

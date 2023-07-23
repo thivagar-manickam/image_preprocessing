@@ -356,9 +356,9 @@ class ConventionalImageEnhancement:
 
                        smooth = cv2.GaussianBlur(image[:, :, 0], (kernel, kernel), 0,
                                                       borderType=cv2.BORDER_REFLECT)
-                       smooth = cv2.GaussianBlur(image[:, :, 1], (kernel, kernel), 0,
+                       smooth = cv2.GaussianBlur(smooth[:, :, 1], (kernel, kernel), 0,
                                                       borderType=cv2.BORDER_REFLECT)
-                       smooth = cv2.GaussianBlur(image[:, :, 2], (kernel, kernel), 0,
+                       smooth = cv2.GaussianBlur(smooth[:, :, 2], (kernel, kernel), 0,
                                                       borderType=cv2.BORDER_REFLECT)
                        laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
                        image = np.uint16(np.absolute(laplacian))

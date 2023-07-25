@@ -74,9 +74,6 @@ class TraditionalImageEnhancement:
         try:
             validate_cmap_value(cmap, 'Linear Equation', 'cmap')
 
-            validate_param_type('constant', constant, type(constant), int)
-
-
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False
 
@@ -191,9 +188,6 @@ class TraditionalImageEnhancement:
             power_value_custom_exception = f"power_value is a required param when applying the power transformation." \
                                            f" Please pass in the power_value parameter"
 
-            validate_param_type('method', method, type(method), str)
-
-
             validate_cmap_value(cmap, 'Non - Linear', 'cmap')
             validate_param_list_value(method, ['power', 'exponential', 'log'], 'Non - Linear', 'method')
 
@@ -303,11 +297,9 @@ class TraditionalImageEnhancement:
             custom_exception = f"value is a required param when applying the mathematical transformation." \
                                            f" Please pass in the value parameter"
 
-            validate_param_type('method', method, type(method), str)
-
             validate_cmap_value(cmap,'Mathematical Operations','cmap')
 
-            validate_param_list_value(method, ['division', 'subtraction', 'multiplication', 'addition'],
+            validate_param_list_value(method, ['addition', 'subtraction', 'multiplication', 'division'],
                                       'Mathematical operations', 'method')
 
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
@@ -341,14 +333,14 @@ class TraditionalImageEnhancement:
 
                 if is_hsv:
                     if channel is not None:
-                        raise CustomException("Non - Linear equation can be applied only on the Value channel for a HSV"
+                        raise CustomException("Mathematical operation can be applied only on the Value channel for a HSV"
                                               " type image. Remove the channel parameter")
 
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
                 elif is_lab:
                     if channel is not None:
-                        raise CustomException("Non - Linear equation can be applied only of the Lightness channel for a"
+                        raise CustomException("Mathematical operation can be applied only of the Lightness channel for a"
                                               " LAB type image. Remove the channel parameter")
 
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)

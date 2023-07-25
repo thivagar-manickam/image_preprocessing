@@ -49,6 +49,10 @@ class ImageEdgeDetection:
                 raise ValueError(
                     f"plot_output parameter takes only True or False boolean value. No other values allowed")
 
+            validate_param_type('kernel', kernel, type(kernel), int)
+
+            validate_param_type('smoothness', smoothness, type(smoothness), bool)
+
             image = self.image
             if self.is_color_image:
                 image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)

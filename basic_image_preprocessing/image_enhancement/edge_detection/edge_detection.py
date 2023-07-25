@@ -181,8 +181,7 @@ class ImageEdgeDetection:
             processed_image = cv2.filter2D(image, -1, kernel)
 
             if plot_output:
-                plot_graph(self.image, processed_image, self.is_color_image, f'Sharpening Filter Mask',
-                           is_edge_detection=True)
+                plot_graph(self.image, processed_image, self.is_color_image, f'{filter_type}', is_edge_detection=True)
 
             return processed_image
 

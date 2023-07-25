@@ -5,7 +5,7 @@ import cv2
 from warnings import filterwarnings
 from basic_image_preprocessing.exception.custom_exception import CustomException
 from basic_image_preprocessing.utility.utlity import load_image, plot_graph, validate_channel_param, \
-    validate_cmap_value
+    validate_cmap_value,validate_param_type
 from typing import List, Union
 
 filterwarnings('ignore')
@@ -174,6 +174,8 @@ class ConventionalImageEnhancement:
 
         try:
             validate_cmap_value(cmap, 'CLAHE', 'cmap')
+
+            validate_param_type('tile grid size', tile_grid_size, type(tile_grid_size), int)
 
             is_hsv = True if cmap is not None and cmap.lower() == 'hsv' else False
             is_lab = True if cmap is not None and cmap.lower() == 'lab' else False

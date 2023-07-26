@@ -1,5 +1,6 @@
 import os
 import cv2
+import numpy
 import numpy as np
 from basic_image_preprocessing.exception.custom_exception import CustomException
 import matplotlib.pyplot as plt
@@ -139,7 +140,7 @@ def validate_param_type(param_name, param_value, param_type, expected_type):
 
 
 def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: np.ndarray = None,
-                       normalize: bool = False):
+                       normalize: bool = False) -> numpy.ndarray:
     """
     Create a kernel mask for image processing based on the kernel_type passed.
 
@@ -194,7 +195,7 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
         kernel[center, center] = kernel_size * kernel_size
 
     elif kernel_type == 'mean':
-        kernel = np.ones((kernel_size,kernel_size), dtype=np.float32)
+        kernel = np.ones((kernel_size, kernel_size), dtype=np.float32)
         kernel = kernel/(kernel_size*kernel_size)
 
     elif kernel_type == 'edge_detection':

@@ -292,6 +292,45 @@ class TraditionalImageEnhancement:
 
     def math_operation(self, method: str, value: Union[int, float], cmap: str = None, plot_output: bool = True
                        , channel: List[int] = None) -> np.ndarray:
+        """
+                This definition will apply the mathematical operation on the given image
+                with the value and method given in the parameters
+
+                Input:
+                    value -> This is the value that will be applied on the image for all the transformation. It is a
+                        mandatory param
+
+                    method -> This value will instruct the definition on what type of mathematical transformation to be
+                        done on the image.
+                        Accepted values - addition', 'subtraction', 'multiplication', 'division'
+                        Will throw an error if the string is different from the accepted values
+
+                    cmap -> This value will denote on which plane the transformation needs to be applied on provided the
+                        cmap during object creation was mentioned as rgb
+                        Accepted value:
+                            'gray' -> will apply the transformation on the gray scale image
+                            'rgb' -> will apply the transformation on the channels given in 'channels' list. By default,
+                                    apply transformation on all the three channels
+                            'hsv' -> will apply the transformation only on the value channel. If the channel param is specified,
+                                    will throw an error
+                            'lab' -> will apply the transformation only on the lightness channel. If the channel param is
+                                    specified will throw an error
+
+                        Default value -> None. Will default to the cmap value specified during the object creation
+
+                    plot_output -> This is a boolean value which will instruct the program whether to display the
+                                images post pre-processing or not. Will throw value error if value other than the accepted value
+                                passed
+                        Accepted values - True , False
+
+                    channel -> Specify the channel index on which the transformation to be applied. Only allowed when the
+                        cmap = 'rgb'. Throws error when the cmap is 'hsv' or 'lab'
+                        Default value -> None
+                        Accepted value -> [0, 1, 2]
+
+                Output:
+                    numpy.ndarray -> image post applying the non-linear equation on the given image
+                """
 
         try:
             custom_exception = f"value is a required param when applying the mathematical transformation." \

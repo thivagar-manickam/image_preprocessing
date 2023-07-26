@@ -48,7 +48,7 @@ class SpatialNoiseFiltering:
         """
 
         try:
-            validate_param_list_value(filter_type, ['mean', 'median'], 'Noise Filtering', 'filter_type')
+            validate_param_list_value(filter_type, ['mean', 'median', 'gaussian'], 'Noise Filtering', 'filter_type')
 
             validate_param_type('kernel_size', kernel_size, type(kernel_size), int)
 
@@ -57,6 +57,10 @@ class SpatialNoiseFiltering:
             if filter_type == 'median':
                 image = self.image.astype(np.uint8)
                 processed_image = cv2.medianBlur(image, kernel_size)
+
+            elif filter_type == 'gaussian':
+                image = self.image.astype(np.uint8)
+                processed_image = cv2.filter2D(image, -1, kernel)
 
             else:
                 processed_image = cv2.filter2D(self.image, -1, kernel)

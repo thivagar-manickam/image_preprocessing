@@ -193,6 +193,10 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
         center = kernel_size // 2
         kernel[center, center] = kernel_size * kernel_size
 
+    elif kernel_type == 'mean':
+        kernel = np.ones((kernel_size,kernel_size), dtype=np.float32)
+        kernel = kernel/(kernel_size*kernel_size)
+
     elif kernel_type == 'edge_detection':
         # Default edge detection kernel (laplacian operator)
         kernel = -np.ones((kernel_size, kernel_size), dtype=np.float32)

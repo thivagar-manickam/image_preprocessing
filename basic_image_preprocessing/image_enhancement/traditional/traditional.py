@@ -288,7 +288,8 @@ class TraditionalImageEnhancement:
             raise CustomException(ex)
 
         except Exception as ex:
-            raise Exception(f"An error occurred while trying to apply the non-linear equation on the given image - {ex}")
+            raise Exception(f"An error occurred while trying to apply the non-linear equation "
+                            f"on the given image - {ex}")
 
     def math_operation(self, method: str, value: Union[int, float], cmap: str = None, plot_output: bool = True
                        , channel: List[int] = None) -> np.ndarray:

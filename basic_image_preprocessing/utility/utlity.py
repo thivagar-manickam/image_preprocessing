@@ -139,8 +139,7 @@ def validate_param_type(param_name, param_value, param_type, expected_type):
             raise ValueError(f"{param_name} is expected to be in {expected_type} but received value is {param_type}")
 
 
-def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: np.ndarray = None,
-                       normalize: bool = False) -> numpy.ndarray:
+def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: np.ndarray = None) -> numpy.ndarray:
     """
     Create a kernel mask for image processing based on the kernel_type passed.
 
@@ -148,10 +147,9 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
         kernel_size (int): The size of the kernel mask (should be odd).
         kernel_type (str): The type of kernel to create.
 
-                           Possible values: 'identity', 'box', 'gaussian', 'sharpen', 'edge_detection', 'custom'.
+                           Possible values: 'identity', 'box', 'gaussian', 'sharpen', 'edge_detection', 'mean', 'custom'
                            Default is 'identity'.
-        normalize (bool): Whether to normalize the kernel or not.
-                          Default is False.
+
 
         custom_edge_kernel (np.ndarray): A custom edge detection kernel provided by the user.
                                          It should be a 2D square matrix ndArray element which has the
@@ -178,16 +176,13 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
 
     elif kernel_type == 'box':
         kernel = np.ones((kernel_size, kernel_size), dtype=np.float32)
-        if normalize:
-            kernel /= kernel_size ** 2
 
     elif kernel_type == 'gaussian':
         sigma = kernel_size / 6  # You can adjust the sigma value for different levels of blur.
         x, y = np.meshgrid(np.linspace(-kernel_size // 2, kernel_size // 2, kernel_size),
                            np.linspace(-kernel_size // 2, kernel_size // 2, kernel_size))
         kernel = np.exp(-(x ** 2 + y ** 2) / (2 * sigma ** 2))
-        if normalize:
-            kernel /= kernel.sum()
+        kernel /= kernel.sum()
 
     elif kernel_type == 'sharpen':
         kernel = -np.ones((kernel_size, kernel_size), dtype=np.float32)

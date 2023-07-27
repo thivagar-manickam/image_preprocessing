@@ -84,26 +84,25 @@ class SpatialNoiseFiltering:
                          sigma_space: Union[int, float] = 50, plot_output: bool = True) -> np.ndarray:
         """
         A bilateral filter is a non-linear, edge-preserving, and noise-reducing smoothing filter for images.
-    It replaces the intensity of each pixel with a weighted average of intensity values from nearby pixels.
+        It replaces the intensity of each pixel with a weighted average of intensity values from nearby pixels.
 
-    Input:
-        diameter: Diameter of each pixel neighborhood.
+        Input:
+            diameter: Diameter of each pixel neighborhood.
 
-        sigma_color: Value of sigma_color  in the color space.
-        The greater the value, the colors farther to each other will start to get mixed.
+            sigma_color: Value of sigma_color  in the color space.
+            The greater the value, the colors farther to each other will start to get mixed.
 
-        sigma_space:Value of sigma  in the coordinate space.
-        The greater its value, when the pixels are further away it will mix together
+            sigma_space:Value of sigma  in the coordinate space.
+            The greater its value, when the pixels are further away it will mix together
 
-        plot_output -> This is a boolean value which will instruct the program whether to display the
-            images post pre-processing or not. Will throw value error if value other than the accepted value
-            passed.
+            plot_output -> This is a boolean value which will instruct the program whether to display the
+                images post pre-processing or not. Will throw value error if value other than the accepted value
+                passed.
 
-            Accepted values - True , False
-    Output:
-        numpy.ndarray -> image post applying the canny edge detection on the given image
+                Accepted values - True , False
+        Output:
+            numpy.ndarray -> image post applying the canny edge detection on the given image
         """
-
         try:
             validate_param_type('diameter', diameter, type(diameter), int)
 

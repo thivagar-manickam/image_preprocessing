@@ -1,4 +1,3 @@
-import numpy
 import numpy as np
 import cv2
 from warnings import filterwarnings
@@ -24,7 +23,7 @@ class SpatialNoiseFiltering:
             raise ex
 
     def noise_filtering(self, kernel_size: int, filter_type: str,
-                        plot_output: bool = True) -> numpy.ndarray:
+                        plot_output: bool = True) -> np.ndarray:
         """
         This definition will apply the noise removal method to identify the
         noises in the image with the specified parameter values.

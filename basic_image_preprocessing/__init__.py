@@ -3,7 +3,7 @@ from basic_image_preprocessing.image_enhancement.conventional.conventional impor
 from basic_image_preprocessing.image_enhancement.edge_detection.edge_detection import ImageEdgeDetection
 from basic_image_preprocessing.image_enhancement.noise_filtering.spatial_filtering.spatial_filtering \
     import SpatialNoiseFiltering
-from basic_image_preprocessing.image_enhancement.noise_filtering.frequency_filtering.freaquency_filtering \
+from basic_image_preprocessing.image_enhancement.noise_filtering.frequency_filtering.frequency_filtering \
     import FrequencyNoiseFiltering
 
 __all__ = [

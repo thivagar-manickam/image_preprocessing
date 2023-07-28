@@ -152,16 +152,18 @@ class ImageEdgeDetection:
         custom_kernel_array is not passed
 
         :param kernel_size: Size of the filter array to be created. Should be an odd positive integer
+
         :param filter_type: The filter_type used to define what type of filtering mask to be applied on the image
                             Accepted Value -> 'sharpen', 'edge_detection'
                             Uses the 'custom' value when the custom_filter_array is passed.
 
         :param custom_filter_array: A custom numpy square matrix array, whose row and column values should be equal to
                                     the kernel size passed
+
         :param plot_output: This is a boolean value which will instruct the program whether to display the
-                            images post pre-processing or not. Will throw value error if value other than the accepted value
-                            passed
-                    Accepted values - True , False
+                            images post pre-processing or not. Will throw value error if value other than the accepted
+                            value passed.
+                                Accepted values - True , False
         :return: numpy.ndarray -> image post applying the required filtering on the given image
         """
         try:

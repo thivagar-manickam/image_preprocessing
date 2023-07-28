@@ -122,3 +122,80 @@ class SpatialNoiseFiltering:
         except Exception as ex:
             raise Exception(f"An error occurred while trying to apply the Bilateral mask on "
                             f"the given image - {ex}")
+
+    def wiener_filter(self, kernel_size, filter_type='mean', noise_variance: float = 0.01,
+                      plot_output: bool = True) -> np.ndarray:
+        """
+                In signal processing, the Wiener filter is a filter used to produce an estimate of a desired or target
+                random process by linear time-invariant (LTI) filtering of an observed noisy process, assuming known
+                stationary signal and noise spectra, and additive noise. The Wiener filter minimizes the mean square
+                error between the estimated random process and the desired process.
+
+
+                Input:
+                    Kernel_size : Size of the array of the filter Point Spread Function (PSF) of the degradation process
+
+                    filter_type : Mean is the filter that is used it is a fixed parameter.
+
+                    noise_variance :  Variance of the noise.
+
+                    plot_output -> This is a boolean value which will instruct the program whether to display the
+                        images post pre-processing or not. Will throw value error if value other than the accepted value
+                        passed.
+
+                        Accepted values - True , False
+                Output:
+                    numpy.ndarray -> image post applying the wiener transformation on the given image
+                """
+
+        try:
+            validate_param_list_value(filter_type, ['mean'], 'Wiener Filtering', 'filter_type')
+            validate_param_type('noise_variance', noise_variance, type(noise_variance), float)
+
+            kernel = create_kernel_mask(kernel_size, filter_type)
+
+            if self.is_color_image:
+                image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
+
+                image_freq = np.fft.fft2(image)
+
+                psf_freq = np.fft.fft2(kernel, s=image.shape)
+
+                # Compute the Wiener filter
+                wiener_filter = np.conj(psf_freq) / (np.abs(psf_freq) ** 2 + noise_variance)
+
+                # Apply the Wiener filter to the frequency domain of the image
+                filtered_freq = image_freq * wiener_filter
+
+                # Compute the inverse Fourier Transform to obtain the filtered image
+                filtered_image = np.fft.ifft2(filtered_freq).real
+
+            else:
+
+                image_freq = np.fft.fft2(self.image)
+
+                psf_freq = np.fft.fft2(kernel, s=self.image.shape)
+
+                # Compute the Wiener filter
+                wiener_filter = np.conj(psf_freq) / (np.abs(psf_freq) ** 2 + noise_variance)
+
+                # Apply the Wiener filter to the frequency domain of the image
+                filtered_freq = image_freq * wiener_filter
+
+                # Compute the inverse Fourier Transform to obtain the filtered image
+                filtered_image = np.fft.ifft2(filtered_freq).real
+
+            if plot_output:
+                plot_graph(self.image, filtered_image, self.is_color_image, f'wiener', is_edge_detection=True)
+
+            return filtered_image
+
+        except ValueError as ex:
+            raise ValueError(ex)
+
+        except CustomException as ex:
+            raise CustomException(ex)
+
+        except Exception as ex:
+            raise Exception(f"An error occurred while trying to apply the Bilateral mask on "
+                            f"the given image - {ex}")

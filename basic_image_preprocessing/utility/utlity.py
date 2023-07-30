@@ -5,6 +5,7 @@ import numpy as np
 from basic_image_preprocessing.exception.custom_exception import CustomException
 import matplotlib.pyplot as plt
 from typing import List, Tuple
+import re
 
 
 def load_image(image_path: str, cmap: str) -> Tuple[np.ndarray, bool]:
@@ -191,7 +192,7 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
 
     elif kernel_type == 'mean':
         kernel = np.ones((kernel_size, kernel_size), dtype=np.float32)
-        kernel = kernel/(kernel_size*kernel_size)
+        kernel = kernel / (kernel_size * kernel_size)
 
     elif kernel_type == 'edge_detection':
         # Default edge detection kernel (laplacian operator)
@@ -205,3 +206,22 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
         kernel = custom_edge_kernel
 
     return kernel
+
+
+def validate_wavelet_type(wavelet_name):
+    """
+    Definition used to validate if the given wavelet name
+    is amoung the given list of accepted wavelet family names
+    :param wavelet_name:
+    :return:
+    """
+    wavelet_types = ['db', 'sym', 'coif', 'bior', 'haar']
+    pattern = r'(?<=\D)(?=\d)'
+
+    # Split the strings based on the regex pattern
+    result = re.split(pattern, wavelet_name.lower(), maxsplit=1)
+
+    if result[0] is not None:
+        if result[0] not in wavelet_types:
+            raise ValueError(f"In Wavelet transformation the 'wavelet_name' param can take only a starting string "
+                             f"in {wavelet_types} list")

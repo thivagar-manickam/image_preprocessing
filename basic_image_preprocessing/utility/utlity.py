@@ -1,6 +1,5 @@
 import os
 import cv2
-import numpy
 import numpy as np
 from basic_image_preprocessing.exception.custom_exception import CustomException
 import matplotlib.pyplot as plt
@@ -125,7 +124,7 @@ def validate_cmap_value(value, function_name: str, param_name: str) -> bool:
     return True
 
 
-def validate_param_type(param_name, param_value, param_type, expected_type):
+def validate_param_type(param_name, param_value, param_type, expected_type) -> None:
     """
     Definition to validate if the param type is same as specified in the definition
     If not an error is raised
@@ -140,24 +139,20 @@ def validate_param_type(param_name, param_value, param_type, expected_type):
             raise ValueError(f"{param_name} is expected to be in {expected_type} but received value is {param_type}")
 
 
-def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: np.ndarray = None) -> numpy.ndarray:
+def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: np.ndarray = None) -> np.ndarray:
     """
     Create a kernel mask for image processing based on the kernel_type passed.
 
     Parameters:
         kernel_size (int): The size of the kernel mask (should be odd).
         kernel_type (str): The type of kernel to create.
-
-                           Possible values: 'identity', 'box', 'gaussian', 'sharpen', 'edge_detection', 'mean', 'custom'
-                           Default is 'identity'.
-
-
+                        Possible values: 'identity', 'box', 'gaussian', 'sharpen', 'edge_detection', 'mean', 'custom'
+                        Default is 'identity'.
         custom_edge_kernel (np.ndarray): A custom edge detection kernel provided by the user.
                                          It should be a 2D square matrix ndArray element which has the
                                          rows and columns value equivalent to the size parameter.
                                          Mandatory when the kernel_type is 'custom'
                                          Default is None.
-
     Returns:
         np.ndarray: The returned kernel mask is a 2D numpy array.
     """
@@ -208,7 +203,7 @@ def create_kernel_mask(kernel_size: int, kernel_type: str, custom_edge_kernel: n
     return kernel
 
 
-def validate_wavelet_type(wavelet_name):
+def validate_wavelet_type(wavelet_name) -> None:
     """
     Definition used to validate if the given wavelet name
     is amoung the given list of accepted wavelet family names

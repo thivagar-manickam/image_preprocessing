@@ -1,12 +1,30 @@
-# 📸 Image Pre-Processing Techniques 📷
+<div align="center">
+  <h1>📸 Basic Image Preprocessing 📸</h1>
+  
+  [![PyPI version](https://badge.fury.io/py/image-frequency-analysis.svg)](https://pypi.org/project/image-frequency-analysis/)
+  [![PyPI stats](https://img.shields.io/pypi/dm/image-frequency-analysis.svg)](https://pypistats.org/packages/image-frequency-analysis)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/thivagar-manickam/image-frequency-analysis/blob/main/LICENSE)
+  [![Supported Python Versions](https://img.shields.io/pypi/pyversions/image-frequency-analysis.svg)](https://pypi.org/project/image-frequency-analysis/)
+</div>
 
-This repository is focused on the various image pre-processing techniques
-that can be used for tasks like:
-  1. Image Enhancement 
-  2. Noise Filtering 
-  3. Image Reconstruction
 
-# List of Techniques Available in the package
+Basic Image Preprocessing is a Python package that is focused on handling the various Image enhancement
+and Noise removal techniques.
+
+The package encompasses most of the basic methods and algorithms used for enhancing the quality 
+of the image as well as the removal of noise from the image.
+
+
+## Quick Install
+
+You can install the package directly by using the pip command or through the conda command prompt
+
+`pip install basic_image_preprocessing`
+or
+`conda install basic_image_preprocessing -c conda-forge`
+
+
+## List of Techniques Available in the Package
 
 <table>
   <thead>
@@ -114,3 +132,20 @@ that can be used for tasks like:
     </tr>
   </tbody>
 </table>
+
+
+## 💁 Contributing
+If you would like to contribute to this project, create a pull request with your changes and provide
+a detailed description of the change being done.
+
+
+## :lady_beetle: Report a bug
+If you find a bug or unexpected behavior when using any of the methods, kindly raise an Issue.
+Please follow the bug template [here](.github/bug_report.md) while raising the bug, so that it will be
+easy for us to analyze and provide a fix for the issue.
+
+
+## :placard: Request a new feature
+If you find any method or algorithm being missed out from the package, please create a feature request under
+the Issue section by following the feature request template found [here](.github/feature_request.md) We will
+go through the request and do the required works to get the feature ready.

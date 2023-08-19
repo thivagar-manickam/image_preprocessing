@@ -1,20 +1,24 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Short Description
+about: Mention the method in which you faced issue
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Describe the bug:**
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+Give a clear and concise description of what the bug is.
+
+**Expected behavior:**
+
+Give a clear and concise description of what you expected to happen.
 
 **Screenshots**
+
 If applicable, add screenshots to help explain your problem.
 
 **Additional context**
-Add any other context about the problem here.
+
+Add any other context about the problem you can update over here

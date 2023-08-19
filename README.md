@@ -1,10 +1,10 @@
 <div align="center">
   <h1>📸 Basic Image Preprocessing 📸</h1>
   
-  [![PyPI version](https://badge.fury.io/py/image-frequency-analysis.svg)](https://pypi.org/project/image-frequency-analysis/)
-  [![PyPI stats](https://img.shields.io/pypi/dm/image-frequency-analysis.svg)](https://pypistats.org/packages/image-frequency-analysis)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/thivagar-manickam/image-frequency-analysis/blob/main/LICENSE)
-  [![Supported Python Versions](https://img.shields.io/pypi/pyversions/image-frequency-analysis.svg)](https://pypi.org/project/image-frequency-analysis/)
+  [![PyPI version](https://badge.fury.io/py/basic-image-preprocessing.svg)](https://pypi.org/project/basic-image-preprocessing/)
+  [![PyPI stats](https://img.shields.io/pypi/dm/basic-image-preprocessing.svg)](https://pypistats.org/packages/basic-image-preprocessing)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/thivagar-manickam/basic-image-preprocessing/blob/main/LICENSE)
+  [![Supported Python Versions](https://img.shields.io/pypi/pyversions/basic-image-preprocessing.svg)](https://pypi.org/project/basic-image-preprocessing/)
 </div>
 
 
@@ -141,11 +141,11 @@ a detailed description of the change being done.
 
 ## :lady_beetle: Report a bug
 If you find a bug or unexpected behavior when using any of the methods, kindly raise an Issue.
-Please follow the bug template [here](.github/bug_report.md) while raising the bug, so that it will be
+Please follow the bug template [here](.github/ISSUE_TEMPLATE/bug_report.md) while raising the bug, so that it will be
 easy for us to analyze and provide a fix for the issue.
 
 
 ## :placard: Request a new feature
 If you find any method or algorithm being missed out from the package, please create a feature request under
-the Issue section by following the feature request template found [here](.github/feature_request.md) We will
+the Issue section by following the feature request template found [here](.github/ISSUE_TEMPLATE/feature_request.md) We will
 go through the request and do the required works to get the feature ready.

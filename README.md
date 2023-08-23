@@ -145,7 +145,7 @@ Please follow the bug template [here](.github/ISSUE_TEMPLATE/bug_report.md) whil
 easy for us to analyze and provide a fix for the issue.
 
 
-## :placard: Request a new feature
-If you find any method or algorithm being missed out from the package, please create a feature request under
+## :placard: Request a new Algorithm / Functionality
+If you find any method or algorithm missing from the package, please create a feature request under
 the Issue section by following the feature request template found [here](.github/ISSUE_TEMPLATE/feature_request.md) We will
 go through the request and do the required works to get the feature ready.

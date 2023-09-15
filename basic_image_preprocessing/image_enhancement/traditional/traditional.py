@@ -212,6 +212,7 @@ class TraditionalImageEnhancement:
                     image = np.clip(np.exp(image), 0, 255).astype(np.uint8)
 
                 elif method == 'log':
+
                     image = np.clip(np.log1p(image), 0, 255).astype(np.uint8)
 
             else:
@@ -261,13 +262,18 @@ class TraditionalImageEnhancement:
                         elif method == 'exponential':
                             image = np.clip(np.exp(image), 0, 255)
 
-                        elif method == 'log':
-                            image = np.clip(np.log1p(image), 0, 255)
+                        #elif method == 'log':
+                        #    image = np.clip(np.log1p(image), 0, 255)
+
                 else:
                     # If the channel validation passes, then apply the transformation on the specified planes
                     if validate_channel_param(channel=channel):
-                        for x in channel:
-                            image[:, :, x] = np.clip(np.power(image[:, :, x], power_value), 0, 255)
+                        if method == 'power':
+                            for x in channel:
+                                image[:, :, x] = np.clip(np.power(image[:, :, x], power_value), 0, 255)
+                        if method == 'log':
+                            for x in channel:
+                                image[:,:,x] = np.clip(np.log1p(image[:, :, x]), 0, 255)
 
                 if is_hsv:
                     image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)

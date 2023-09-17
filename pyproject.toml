@@ -13,7 +13,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-keywords = ["Image preprocessing", "Basic Image preprocessing", "Linear methods", "Algorithm based preprocessing"]
+keywords = ["Image preprocessing", "Basic Image preprocessing", "Linear methods", "Algorithm based preprocessing",
+            "Noise filtering", "Frequency based transformation", "Edge detection"]
 
 [tool.poetry.dependencies]
 python = ">=3.8"

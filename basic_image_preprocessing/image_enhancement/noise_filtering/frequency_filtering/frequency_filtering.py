@@ -1,7 +1,4 @@
 import numpy as np
-import pywt
-import cv2
-import matplotlib.pyplot as plt
 from warnings import filterwarnings
 import image_frequency_analysis as ifa
 from basic_image_preprocessing.exception.custom_exception import CustomException

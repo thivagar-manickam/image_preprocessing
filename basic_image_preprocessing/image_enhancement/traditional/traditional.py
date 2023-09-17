@@ -262,9 +262,6 @@ class TraditionalImageEnhancement:
                         elif method == 'exponential':
                             image = np.clip(np.exp(image), 0, 255)
 
-                        #elif method == 'log':
-                        #    image = np.clip(np.log1p(image), 0, 255)
-
                 else:
                     # If the channel validation passes, then apply the transformation on the specified planes
                     if validate_channel_param(channel=channel):
@@ -343,7 +340,7 @@ class TraditionalImageEnhancement:
             custom_exception = f"value is a required param when applying the mathematical transformation." \
                                            f" Please pass in the value parameter"
 
-            validate_cmap_value(cmap,'Mathematical Operations','cmap')
+            validate_cmap_value(cmap, 'Mathematical Operations', 'cmap')
 
             validate_param_list_value(method, ['addition', 'subtraction', 'multiplication', 'division'],
                                       'Mathematical operations', 'method')

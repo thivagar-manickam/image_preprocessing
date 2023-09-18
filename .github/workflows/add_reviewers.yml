@@ -1,0 +1,30 @@
+name: Add Reviewers to PR
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  add_reviewers:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Add reviewers
+      run: |
+        PR_URL="${{ github.event.pull_request.url }}"
+        REVIEWERS="thivagar-manickam saivijaay2107"
+        
+        for REVIEWER in $REVIEWERS; do
+          curl -X POST -H "Authorization: token ${{ secrets.GH_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "${PR_URL}/requested_reviewers" \
+            -d '{"reviewers": ["'"$REVIEWER"'"]}'
+        done

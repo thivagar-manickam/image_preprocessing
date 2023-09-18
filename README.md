@@ -2,7 +2,7 @@
   <h1>📸 Basic Image Preprocessing 📸</h1>
   
   [![PyPI version](https://badge.fury.io/py/basic-image-preprocessing.svg)](https://pypi.org/project/basic-image-preprocessing/)
-  [![PyPI stats](https://img.shields.io/pypi/dm/basic-image-preprocessing.svg)](https://pypistats.org/packages/basic-image-preprocessing)
+  [![Downloads](https://static.pepy.tech/badge/basic-image-preprocessing)](https://pepy.tech/project/basic-image-preprocessing)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/thivagar-manickam/basic-image-preprocessing/blob/main/LICENSE)
   [![Supported Python Versions](https://img.shields.io/pypi/pyversions/basic-image-preprocessing.svg)](https://pypi.org/project/basic-image-preprocessing/)
 </div>

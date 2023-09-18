@@ -188,6 +188,8 @@ class TraditionalImageEnhancement:
             power_value_custom_exception = f"power_value is a required param when applying the power transformation." \
                                            f" Please pass in the power_value parameter"
 
+            log_method_custom_exception = f"Channel is a required param when applying log transformation on RGB image."
+
             validate_cmap_value(cmap, 'Non - Linear', 'cmap')
             validate_param_list_value(method, ['power', 'exponential', 'log'], 'Non - Linear', 'method')
 
@@ -197,6 +199,9 @@ class TraditionalImageEnhancement:
             # Validating if power_value is available if the method is 'power'
             if method == 'power' and power_value is None:
                 raise CustomException(power_value_custom_exception)
+
+            elif method == 'log' and (not is_hsv and not is_lab) and (channel is None):
+                raise CustomException(log_method_custom_exception)
 
             if type(plot_output) is not bool:
                 raise ValueError(

@@ -40,7 +40,7 @@ or
       <td rowspan=3>Traditional</td>
       <td>Linear Equation</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Traditional Methods.ipynb">Linear Equation Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Traditional%20Methods.ipynb">Linear Equation Usage Examples</a></td>
     </tr>
     <tr>
       <td>Non Linear Methods</td>
@@ -51,7 +51,7 @@ or
           <li>Lograthimic transformation</li>
         </ol>
       </td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Traditional Methods.ipynb">Non Linear Method Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Traditional%20Methods.ipynb">Non Linear Method Usage Examples</a></td>
     </tr>
     <tr>
       <td>Basic Mathematical Operations</td>
@@ -63,29 +63,29 @@ or
           <li>Division</li>
         </ol>
       </td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Traditional Methods.ipynb">Basic Mathematical Operation Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Traditional%20Methods.ipynb">Basic Mathematical Operation Usage Examples</a></td>
     </tr>
     <tr>
       <td rowspan=2>Conventional</td>
       <td>Histogram Equalization</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Conventional Methods.ipynb">Histogram Equalization Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Conventional%20Methods.ipynb">Histogram Equalization Usage Examples</a></td>
     </tr>
     <tr>
       <td>CLAHE</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Conventional Methods.ipynb">CLAHE Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Conventional%20Methods.ipynb">CLAHE Usage Examples</a></td>
     </tr>
     <tr>
       <td rowspan=3>Edge Detection</td>
       <td>Laplacian</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Edge Detection.ipynb">Laplacian Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Edge%20Detection.ipynb">Laplacian Usage Examples</a></td>
     </tr>
     <tr>
       <td>Canny Edge Detection</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Edge Detection.ipynb">Canny Edge Detection Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Edge%20Detection.ipynb">Canny Edge Detection Usage Examples</a></td>
     </tr>
     <tr>
       <td>Edge Filtering Techniques</td>
@@ -95,29 +95,24 @@ or
           <li>Custom Edge Detection</li>
         </ol>
       </td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Edge Detection.ipynb">Edge Filtering technique Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Edge%20Detection.ipynb">Edge Filtering technique Usage Examples</a></td>
     </tr>
     <tr>
-      <td rowspan=2>Frequency Noise Filtering</td>
+      <td rowspan=1>Frequency Noise Filtering</td>
       <td>Fourier Transform</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Frequency Noise Filtering.ipynb">Fourier Transform Usage Examples</a></td>
-    </tr>
-    <tr>
-      <td>Wavelet Transform</td>
-      <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Frequency Noise Filtering.ipynb">Wavelet Transform Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Frequency%20Noise%20Filtering.ipynb">Fourier Transform Usage Examples</a></td>
     </tr>
     <tr>
       <td rowspan=3>Spatial Noise Filtering</td>
       <td>Bilateral Filter</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Spatial Noise Filtering.ipynb">Bilateral Filter Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Spatial%20Noise%20Filtering.ipynb">Bilateral Filter Usage Examples</a></td>
     </tr>
     <tr>
       <td>Wiener Filter</td>
       <td></td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Spatial Noise Filtering.ipynb">Wiener Filter Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Spatial%20Noise%20Filtering.ipynb">Wiener Filter Usage Examples</a></td>
     </tr>
     <tr>
       <td>Basic Noise Filtering</td>
@@ -128,7 +123,7 @@ or
           <li>Gaussian Filtering</li>
         </ol>
       </td>
-      <td><a href="basic_image_preprocessing/examples/Basic Image Processing - Spatial Noise Filtering.ipynb">Basic Noise Filtering Usage Examples</a></td>
+      <td><a href="https://github.com/thivagar-manickam/image_preprocessing/blob/main/basic_image_preprocessing/examples/Basic%20Image%20Processing%20-%20Spatial%20Noise%20Filtering.ipynb">Basic Noise Filtering Usage Examples</a></td>
     </tr>
   </tbody>
 </table>

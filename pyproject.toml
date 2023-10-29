@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "basic_image_preprocessing"
-version = "1.0.4"
+version = "1.0.5"
 description = "A complete package to perform a list of simple manual and package based image preprocessing techniques"
 authors = ["M Thivagar", "Saivijaay"]
 readme = "README.md"

@@ -60,9 +60,11 @@ class ImageEdgeDetection:
             if smoothness:
                 smooth = cv2.GaussianBlur(image, (kernel, kernel), 0, borderType=cv2.BORDER_REFLECT)
                 laplacian = cv2.Laplacian(smooth, cv2.CV_64F)
+                laplacian = np.clip(laplacian, 0, 255)
                 image = np.uint16(np.absolute(laplacian))
             else:
                 laplacian = cv2.Laplacian(image, cv2.CV_64F)
+                laplacian = np.clip(laplacian, 0, 255)
                 image = np.uint16(np.absolute(laplacian))
 
             if plot_output:

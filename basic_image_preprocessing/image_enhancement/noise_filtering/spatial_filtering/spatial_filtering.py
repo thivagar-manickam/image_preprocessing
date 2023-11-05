@@ -169,6 +169,7 @@ class SpatialNoiseFiltering:
 
             # Compute the inverse Fourier Transform to obtain the filtered image
             filtered_image = np.fft.ifft2(filtered_freq).real
+            filtered_image = np.clip(filtered_image, 0, 255)
 
             if plot_output:
                 plot_graph(self.image, filtered_image, self.is_color_image, f'Wiener', is_edge_detection=True)
